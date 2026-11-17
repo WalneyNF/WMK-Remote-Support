@@ -92,6 +92,12 @@ export class RemoteSession {
   readonly code: string;
   readonly canvas: HTMLCanvasElement;
 
+  /** Captura apenas o quadro da tela remota recebida durante uma sessão ativa. */
+  captureRemoteScreen(): Promise<Blob> {
+    if (this.state !== "live") return Promise.reject(new Error("Conecte-se antes de capturar a tela."));
+    return this.view.snapshot();
+  }
+
   state: SessionState = "connecting";
   /** 上次断开的原因（显示时才变成文字，见 messages.ts） */
   closedReason: Problem | null = null;
