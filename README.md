@@ -11,6 +11,8 @@
 
 📊 **[Pesquisa comparativa AnyDesk e WMK](manuais/pesquisa-anydesk.html)** — estudo das capturas, perfis de permissão, identificadores e instalação sem configuração.
 
+> 🧪 **Nova versão de laboratório (branch `wmk/v0.3-preview-lab`):** [manual de teste em um só PC](manuais/teste-mesma-maquina.md). O GitHub Actions tenta gerar o instalador Windows e um kit local sem Docker, com servidor relay e console web. A prévia inclui **gravação WebM experimental de até 30 segundos**, apenas no console web em localhost. Não é gravação auditável com aceite no host, e a **transferência de arquivos ainda não está implementada**. Este kit é de teste, não de produção.
+
 ## Sobre o projeto
 
 O **WMK Remote Support** é uma iniciativa de transformar um software de desktop remoto em uma plataforma de atendimento técnico: conexões seguras com autorização, suporte a clientes, diagnóstico, histórico de chamados e documentação acessível em português brasileiro.
