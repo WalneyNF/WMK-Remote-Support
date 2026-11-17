@@ -2154,3 +2154,32 @@ input[type="range"]::-webkit-slider-thumb {
 .wmk-ai-actions span{font-size:11px;color:#a9d4fd}
 .wmk-ai-panel textarea{min-height:55px}
 @media(max-width:620px){.wmk-ai-grid{grid-template-columns:1fr}}
+
+/* WMK IA Assistente: painel somente no console do técnico.
+   O host vê somente a captura nativa de sua própria máquina. */
+.stage.wmk-techai-open .canvas-host{right:390px}
+.wmk-techai{position:absolute;z-index:4;top:0;bottom:0;right:0;width:390px;max-width:100%;display:flex;flex-direction:column;min-height:0;background:#101a2e;color:#eef7ff;border-left:1px solid #445e7f;box-shadow:-7px 0 25px #0006;font:13px/1.5 system-ui,sans-serif}
+.wmk-techai *{box-sizing:border-box}
+.wmk-techai button{padding:6px 9px;background:#273f60;color:#f2f9ff;border:1px solid #55749b;border-radius:7px;cursor:pointer}
+.wmk-techai button:disabled{opacity:.5;cursor:not-allowed}
+.wmk-techai button:hover:not(:disabled){background:#355980}
+.wmk-techai input,.wmk-techai textarea,.wmk-techai select{font:inherit;color:#eaf5ff;background:#0a1529;border:1px solid #526b8f;border-radius:6px;padding:7px;min-width:0}
+.wmk-techai-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px;border-bottom:1px solid #344967}
+.wmk-techai-head>div{display:flex;flex-direction:column;gap:1px}.wmk-techai-head small{color:#b6c9e3;font-size:11px}
+.wmk-techai-settingsbar{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px;border-bottom:1px solid #334966}
+.wmk-techai-settingsbar label,.wmk-techai-config label{display:flex;flex-direction:column;gap:3px;font-size:11px;min-width:0}
+.wmk-techai-settingsbar select{width:100%;max-width:100%}
+.wmk-techai-buttons{display:flex;flex-wrap:wrap;gap:6px;grid-column:1/-1}
+.wmk-techai-config{padding:10px;display:flex;flex-direction:column;gap:7px;overflow:auto;max-height:42%;background:#19263e;border-bottom:1px solid #354866}
+.wmk-techai-config p{font-size:11px;color:#b3c9e0;margin:0}
+.wmk-techai-conversation{flex:1;overflow:auto;min-height:70px;display:flex;flex-direction:column;gap:10px;padding:11px}
+.wmk-techai-conversation article{padding:10px;border-radius:10px;background:#1c2b45;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text}
+.wmk-techai-conversation article.wmk-techai-question{background:#28405b;margin-left:20px}
+.wmk-techai-conversation article.wmk-techai-answer{margin-right:15px}
+.wmk-techai-conversation article p{margin:4px 0 8px;color:#e1eeff;user-select:text}
+.wmk-techai-conversation article button{font-size:10px}
+.wmk-techai-empty{color:#c7d9ef}.wmk-techai-empty p{font-size:12px}
+.wmk-techai-compose{display:flex;flex-direction:column;gap:7px;border-top:1px solid #334966;padding:10px}
+.wmk-techai-compose textarea{resize:vertical;min-height:55px;max-height:140px}
+.wmk-techai-compose small{color:#afc8e4;font-size:10px;overflow-wrap:anywhere}
+@media(max-width:850px){.stage.wmk-techai-open .canvas-host{right:0}.wmk-techai{width:min(390px,93vw)}}
