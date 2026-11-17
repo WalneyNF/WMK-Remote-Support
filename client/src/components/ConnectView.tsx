@@ -16,6 +16,7 @@ import { store, useSession, useStore, type Draft } from "../lib/store";
 const PAIRING_PROBLEMS = new Set(["pairingRequired", "pairingFailed", "pairingUnavailable", "hostKeyChanged"]);
 import { WmkTextEditor } from "./WmkTextEditor";
 import { WmkTechnicianAi } from "./WmkTechnicianAi";
+import { WmkMiniServiceDesk } from "./WmkMiniServiceDesk";
 import { WmkEvidenceStudio } from "./WmkEvidenceStudio";
 import { IconBolt, IconClose, IconMonitor, IconPencil, IconSearch, IconWarn } from "./Icons";
 
@@ -32,6 +33,7 @@ export function ConnectView() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
+  const [deskOpen, setDeskOpen] = useState(false);
 
   // 新建连接标签总是有的时候才显示这一页；万一没有（例如状态不一致），补一个
   useEffect(() => {
@@ -99,6 +101,7 @@ export function ConnectView() {
       {editorOpen && <WmkTextEditor onClose={() => setEditorOpen(false)} />}
       {evidenceOpen && <WmkEvidenceStudio onClose={() => setEvidenceOpen(false)} />}
       {aiOpen && <WmkTechnicianAi onClose={() => setAiOpen(false)} />}
+      {deskOpen && <WmkMiniServiceDesk onClose={() => setDeskOpen(false)} />}
       <div className="nt-wrap">
         <section className="nt-card">
           <div className="nt-head">
@@ -110,6 +113,7 @@ export function ConnectView() {
             <button type="button" className="text-btn" onClick={() => setEditorOpen(true)}>Abrir editor de XML / JSON / Logs</button>
             <button type="button" className="text-btn" onClick={() => setEvidenceOpen(true)}>Rever vídeo e anotações do suporte</button>
             <button type="button" className="text-btn" onClick={() => setAiOpen(true)}>Abrir chat privado de IA e agentes</button>
+            <button type="button" className="text-btn" onClick={() => setDeskOpen(true)}>Clientes e chamados — Mini Service Desk</button>
           </div>
 
           <div className="nt-field">
