@@ -143,6 +143,32 @@ function useToolbarReveal(active: boolean, toolbar: RefObject<HTMLElement | null
   return revealed;
 }
 
+/** Cronômetro cumulativo: contabiliza somente períodos com sessão ativa.
+ * Nenhum timeout ou limite de duração é introduzido aqui. */
+function SessionDuration({ active }: { active: boolean }) {
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    const started = Date.now();
+    let accrued = 0;
+    const interval = window.setInterval(() => {
+      const elapsed = Math.floor((Date.now() - started) / 1000);
+      setSeconds((current) => current + elapsed - accrued);
+      accrued = elapsed;
+    }, 1000);
+    return () => {
+      const elapsed = Math.floor((Date.now() - started) / 1000);
+      setSeconds((current) => current + elapsed - accrued);
+      window.clearInterval(interval);
+    };
+  }, [active]);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remaining = seconds % 60;
+  const shown = [hours, minutes, remaining].map((n) => String(n).padStart(2, "0")).join(":");
+  return <span className="muted" title="Tempo total conectado nesta sessão, sem limite automático">Sessão {shown}</span>;
+}
+
 export function SessionView({ s }: { s: RemoteSession }) {
   // 订阅语言切换（文案直接用导入的 t）
   useT();
@@ -244,6 +270,7 @@ export function SessionView({ s }: { s: RemoteSession }) {
           <div className="addr-stats">
             {live ? (
               <>
+                <SessionDuration active={live} />
                 <span>{Math.round(st.fps)} fps</span>
                 <span>{fmtKbps(st.kbps)}</span>
                 <span className={`rtt ${rttClass}`}>{rtt != null ? `${rtt} ms` : "— ms"}</span>
