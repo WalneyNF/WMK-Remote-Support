@@ -18,6 +18,10 @@ on:
       - "tools/teste-local/**"
       - "manuais/teste-mesma-maquina.md"
 
+concurrency:
+  group: wmk-windows-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
