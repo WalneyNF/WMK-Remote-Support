@@ -459,6 +459,30 @@
         "Modo sem IA e IA local",
         "Timeout, cancelamento e log de proveniencia"
       ]
+    },
+    {
+      "id": "technician-ai-private-chat",
+      "area": "Inteligencia Artificial",
+      "title": "Chat privado do técnico durante acesso remoto com agentes cadastráveis",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkTechnicianAi.tsx",
+        "client/src/components/SessionView.tsx",
+        "client/src/components/ConnectView.tsx",
+        "client/src/styles.css"
+      ],
+      "tests": [
+        "Chat aparece somente no console tecnico e nao e enviado no protocolo de video remoto",
+        "Agentes editaveis: ACBr NFe NFCe, Windows e Desenvolvimento",
+        "Cadastro local de provedores e modelos sem guardar chaves na interface",
+        "Envio e resposta via Ollama local com modelo instalado",
+        "Acompanhar tela e usar mouse/teclado remoto com painel aberto",
+        "Mensagens privadas nao incluem tela remota nem clipboard automaticamente",
+        "Exportar historico do chat JSON",
+        "Typecheck e validacao em Windows com Ollama"
+      ],
+      "notes": "Prévia: apenas Ollama 127.0.0.1:11434 executa chamadas. Conectores Groq/OpenAI/Gemini cadastráveis mas desativados até existir backend seguro. Diferente do WMK IA Assistente do VS Code; a fonte da extensão ainda não está publicada no repo."
     }
   ]
 }
