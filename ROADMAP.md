@@ -75,3 +75,14 @@ Técnico: escolher arquivo / baixar do cliente
 Só publicar instaladores como Release depois de build verde, testes em máquinas reais, testes de segurança e configuração de relay real. Um workflow com sucesso **não comprova** operação ponta a ponta.
 
 [Plano detalhado e testes](manuais/transferencia-e-testes.md) · [Inventário do projeto](manuais/o-que-existe.html)
+
+## Auditoria e gravação de sessões (P0/P1)
+
+- [ ] Autorização explícita de gravação na máquina controlada e aviso visível para ambas as partes
+- [ ] Captura dos quadros remotos decodificados sem bloquear mouse, teclado e áudio
+- [ ] Escrita incremental de vídeo WebM/MP4, de acordo com o codec suportado
+- [ ] Controles de iniciar, pausar, continuar e parar a gravação, inclusive após reconexão
+- [ ] Arquivos por atendimento, hashes SHA-256, relatório de eventos e proteção de dados
+- [ ] Perfis e políticas empresariais, retenção, acesso autorizado às evidências e MFA
+
+Documento completo: [manuais/gravacao-auditoria.html](manuais/gravacao-auditoria.html).
