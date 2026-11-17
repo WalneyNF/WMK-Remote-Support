@@ -57,7 +57,7 @@ function AppMenu({ onClose }: { onClose: () => void }) {
       <div className="am-head">
         <Logo size={38} />
         <div className="am-head-text">
-          <div className="am-name">Airhand</div>
+          <div className="am-name">WMK Remote Support</div>
           <div className="muted small">{t(web ? "menu.versionWeb" : "menu.version", { version: app?.version ?? "—" })}</div>
         </div>
       </div>
