@@ -122,6 +122,8 @@ A transferência de arquivos **ainda não existe** e não deve ser confundida co
 
 **WMK Support Intelligence (prévia):** a Central de Evidências contém um construtor local de consultas para IA sobre erros de NF-e/SEFAZ, XML/JSON, logs e bugs. É possível incluir post-its mediante seleção e copiar a consulta para um assistente externo. **Ainda não chama Ollama, Groq, OpenAI nem Gemini:** integrar provedores de forma segura, gerenciar credenciais e autorização de dados são etapas futuras.
 
+**Referência de interface:** [WMK IA Assistente (VS Code)](https://github.com/WalneyNF/WMK-IA-ASSISTENTE) — extensão v0.6.0 documenta chat lateral, agentes, skills e provedores. O repositório da extensão contém documentação e workflows, mas ainda não os arquivos-fonte para reutilização direta. No Remote Support, um painel próprio **exclusivo do técnico** foi implementado na branch de testes, com agentes personalizáveis e integração experimental ao Ollama em localhost. Groq, OpenAI e Gemini estão no catálogo, ainda sem credenciais nem chamadas; precisam de backend seguro. A sessão remota não envia sua tela nem os dados do cliente para o chat automaticamente.
+
 ## Evolução WMK
 
 Consulte o [roadmap interativo em HTML](manuais/roadmap.html), o [estado de evolução JSON](manuais/evolucao.json) e o [ROADMAP.md](ROADMAP.md) para as prioridades e os critérios de validação.
