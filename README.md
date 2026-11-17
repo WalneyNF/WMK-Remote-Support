@@ -90,7 +90,11 @@ Artefatos de Actions **não são automaticamente Releases públicas**. Primeiro 
 
 **[Pesquisa visual: transferência de arquivos no AnyDesk](manuais/transferencia-referencia-anydesk.html)** — requisitos dos dois painéis, upload/download, Ctrl+C/Ctrl+V, segurança e testes. **Ainda não implementado no WMK.**
 
-**Suporte a sistemas fiscais:** [guia HTML de atendimento a NF-e, XML e backups](manuais/fluxo-suporte-fiscal.html). A branch preview contém uma **base de protocolo binário de transferência** com validações e testes Rust; **ela ainda não transfere arquivos entre computadores**. Para ativar o envio real, faltam integração do host, controlador, autorização de pastas e gerenciador de arquivos na interface.\n\n## Transferência de arquivos e tempo de sessão
+**Suporte a sistemas fiscais:** [guia HTML de atendimento a NF-e, XML e backups](manuais/fluxo-suporte-fiscal.html). A branch preview contém uma **base de protocolo binário de transferência** com validações e testes Rust; **ela ainda não transfere arquivos entre computadores**. Para ativar o envio real, faltam integração do host, controlador, autorização de pastas e gerenciador de arquivos na interface.\n\n**Central de Evidências (prévia):** abra MP4/WebM locais, pause no ponto do erro, salve um quadro PNG e crie post-its com problema encontrado, correção proposta e timestamp. As notas podem ser exportadas/importadas em JSON para a equipe. Esse recurso **não grava sessões automaticamente** e requer validação no instalador Windows.
+
+**Arquivos fiscais e outros formatos:** o objetivo do gerenciador remoto é receber/enviar arquivos de qualquer extensão (inclusive TXT de cancelamento, XML de NF-e/eventos, DANFE PDF, ZIP, EXE e bancos), em blocos para tamanhos grandes, com autorização e hash SHA-256. A transferência entre computadores **ainda não está funcional**; não confundir com o editor local de XML/JSON e a Central de Evidências.
+
+## Transferência de arquivos e tempo de sessão
 
 **Transferência de arquivos (em desenvolvimento):** pretendemos permitir enviar arquivos do computador do técnico para o cliente e baixar arquivos autorizados do cliente. Isso ainda **não está disponível no protocolo atual**. Não confundir com a área de transferência de texto existente.
 
