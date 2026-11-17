@@ -9,6 +9,8 @@
 
 📘 **[Manual HTML: o que já existe no WMK Remote Support](manuais/o-que-existe.html)** — funcionalidades, arquitetura, plataformas, limitações, testes e créditos.
 
+📊 **[Pesquisa comparativa AnyDesk e WMK](manuais/pesquisa-anydesk.html)** — estudo das capturas, perfis de permissão, identificadores e instalação sem configuração.
+
 ## Sobre o projeto
 
 O **WMK Remote Support** é uma iniciativa de transformar um software de desktop remoto em uma plataforma de atendimento técnico: conexões seguras com autorização, suporte a clientes, diagnóstico, histórico de chamados e documentação acessível em português brasileiro.
