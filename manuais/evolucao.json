@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "project": "WMK Remote Support",
+  "updatedAt": "2026-11-17",
+  "author": "Walney Moreira Klein",
+  "contact": "walneyk@hotmail.com",
+  "rules": [
+    "Concluido = implementado, compilado e testado em ambiente representativo.",
+    "implementado_nao_validado = codigo gravado sem teste completo.",
+    "Nunca marcar transferencia de arquivos como concluida antes dos testes bidirecionais e de seguranca."
+  ],
+  "features": [
+    {
+      "id": "base-remote",
+      "area": "Acesso remoto",
+      "title": "Visualizacao e controle da tela",
+      "status": "herdado_a_validar",
+      "priority": "P0",
+      "paths": [
+        "client/src/lib/session.ts",
+        "crates/airhand-proto/"
+      ],
+      "tests": [
+        "Duas maquinas Windows, entrada, mouse e teclado"
+      ]
+    },
+    {
+      "id": "screenshot",
+      "area": "Suporte",
+      "title": "Capturar tela remota como PNG",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "client/src/lib/console-worker.ts",
+        "client/src/lib/console.ts",
+        "client/src/lib/session.ts",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Clique captura imagem remota",
+        "Salva PNG no seletor quando disponivel",
+        "Fallback de download no navegador",
+        "Reconexao e monitores adicionais"
+      ]
+    },
+    {
+      "id": "files-bidirectional",
+      "area": "Transferencia",
+      "title": "Enviar e receber arquivos arbitrarios",
+      "status": "planejado",
+      "priority": "P0",
+      "paths": [
+        "crates/airhand-proto/src/session.rs",
+        "crates/airhand-link/",
+        "client/src-tauri/",
+        "client/src/components/"
+      ],
+      "tests": [
+        "Confirmacao bilateral",
+        "Limites de tamanho e memoria",
+        "Verificacao SHA256",
+        "Tentativa de path traversal",
+        "Interrupcao e retomada autorizada",
+        "Arquivos grandes e nomes Unicode",
+        "Executaveis nao iniciados automaticamente"
+      ]
+    },
+    {
+      "id": "quick-support",
+      "area": "Facilidade",
+      "title": "Instalador e suporte rapido sem configurar servidor",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Configuracao de relay com certificado confiavel",
+        "Autorizacao clara",
+        "Fluxo assistido em Windows sem administrador"
+      ]
+    },
+    {
+      "id": "i18n-ptbr",
+      "area": "Tradução",
+      "title": "Interface completa portugues Brasil",
+      "status": "parcial",
+      "priority": "P1",
+      "tests": [
+        "React",
+        "Rust/bandeja",
+        "Android",
+        "Instalador",
+        "Mensagens de erro"
+      ]
+    },
+    {
+      "id": "session-clock",
+      "area": "Suporte",
+      "title": "Tempo da sessao sem limite artificial",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Pausa durante reconexao",
+        "Sem limite artificial",
+        "Estatisticas"
+      ]
+    },
+    {
+      "id": "client-directory",
+      "area": "Atendimento",
+      "title": "Cadastro de clientes, computadores e grupos empresariais",
+      "status": "parcial",
+      "priority": "P1",
+      "tests": [
+        "Migrar Meus dispositivos",
+        "Acesso por equipe/RBAC",
+        "Revogar tecnico",
+        "Auditoria"
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "area": "Atendimento",
+      "title": "Diagnostico assistido com consentimento",
+      "status": "planejado",
+      "priority": "P2",
+      "tests": [
+        "Coleta minima de dados",
+        "Sem execucao remota sem confirmacao"
+      ]
+    },
+    {
+      "id": "audit-report",
+      "area": "Atendimento",
+      "title": "Relatorios, capturas e historico de suporte",
+      "status": "planejado",
+      "priority": "P2",
+      "tests": [
+        "Pastas de evidencias",
+        "Exportacao",
+        "Redacao de informacoes sensiveis"
+      ]
+    }
+  ]
+}
