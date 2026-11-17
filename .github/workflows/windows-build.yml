@@ -9,11 +9,14 @@ on:
       - "crates/**"
       - ".github/workflows/windows-build.yml"
       - "tools/teste-local/**"
+      - "manuais/teste-mesma-maquina.md"
   pull_request:
     paths:
       - "client/**"
       - "crates/**"
       - ".github/workflows/windows-build.yml"
+      - "tools/teste-local/**"
+      - "manuais/teste-mesma-maquina.md"
 
 permissions:
   contents: read
