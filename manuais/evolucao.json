@@ -84,11 +84,15 @@
       "status": "parcial",
       "priority": "P1",
       "tests": [
-        "React",
-        "Rust/bandeja",
-        "Android",
-        "Instalador",
-        "Mensagens de erro"
+        "Traducao das telas principais em PT-BR",
+        "Persistencia de idioma via localStorage",
+        "Backend Rust e tray ainda pendentes",
+        "Android e instalador ainda pendentes"
+      ],
+      "paths": [
+        "client/src/locales/pt.ts",
+        "client/src/lib/i18n.ts",
+        "client/src/components/AppMenu.tsx"
       ]
     },
     {
