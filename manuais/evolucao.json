@@ -483,6 +483,28 @@
         "Typecheck e validacao em Windows com Ollama"
       ],
       "notes": "Prévia: apenas Ollama 127.0.0.1:11434 executa chamadas. Conectores Groq/OpenAI/Gemini cadastráveis mas desativados até existir backend seguro. Diferente do WMK IA Assistente do VS Code; a fonte da extensão ainda não está publicada no repo."
+    },
+    {
+      "id": "mini-service-desk",
+      "area": "Gestão de atendimento",
+      "title": "Cadastro de clientes, PCs e chamados para pequeno desenvolvedor",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkMiniServiceDesk.tsx",
+        "client/src/components/ConnectView.tsx",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Criar cliente e computador",
+        "Abrir chamado com empresa, categoria e descrição",
+        "Mudar prioridade, status, computador e registrar notas",
+        "Consultar linha do tempo e solução do atendimento",
+        "Pesquisar chamados anteriores",
+        "Exportar e importar backup JSON sem dados sigilosos",
+        "Verificar compilação TypeScript e execução Windows"
+      ],
+      "notes": "MVP de uso individual com localStorage; não é sistema multiusuário, não autentica, não sincroniza ou conecta ao GLPI. Para produção migrar SQLite com criptografia/controle de acesso, backups e trilha de auditoria."
     }
   ]
 }
