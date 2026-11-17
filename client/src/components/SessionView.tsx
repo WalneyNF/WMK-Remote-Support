@@ -600,8 +600,8 @@ export function SessionView({ s }: { s: RemoteSession }) {
         </div>
       </header>
 
-      <div className="stage">
-        <CanvasHost s={s} interactive={s.state === "live" && !aiOpen && !editorOpen && !evidenceOpen} />
+      <div className={`stage ${aiOpen ? "wmk-techai-open" : ""}`}>
+        <CanvasHost s={s} interactive={s.state === "live" && !editorOpen && !evidenceOpen} />
 
         {s.state !== "live" && (
           <div className="stage-overlay">
