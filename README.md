@@ -120,6 +120,8 @@ A transferência de arquivos **ainda não existe** e não deve ser confundida co
 
 📹 **[Gravação e auditoria de sessões](manuais/gravacao-auditoria.html)** — estudo técnico sobre vídeo, relatórios, integridade, consentimento e política empresarial. **Funcionalidade planejada: ainda não disponível no aplicativo.**
 
+**WMK Support Intelligence (prévia):** a Central de Evidências contém um construtor local de consultas para IA sobre erros de NF-e/SEFAZ, XML/JSON, logs e bugs. É possível incluir post-its mediante seleção e copiar a consulta para um assistente externo. **Ainda não chama Ollama, Groq, OpenAI nem Gemini:** integrar provedores de forma segura, gerenciar credenciais e autorização de dados são etapas futuras.
+
 ## Evolução WMK
 
 Consulte o [roadmap interativo em HTML](manuais/roadmap.html), o [estado de evolução JSON](manuais/evolucao.json) e o [ROADMAP.md](ROADMAP.md) para as prioridades e os critérios de validação.
