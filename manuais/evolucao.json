@@ -424,6 +424,41 @@
         "Nao modificar XML fiscal ou PDF durante copia"
       ],
       "notes": "Sem limite arbitrario de extensoes/tamanho no aplicativo, mas sujeito a limites reais de disco, protocolo, rede e filesystem. Ainda nao integrado ao transporte remoto."
+    },
+    {
+      "id": "ai-prompt-builder",
+      "area": "Inteligencia Artificial",
+      "title": "Preparar consulta de diagnostico com notas, erros fiscais e logs",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkSupportAiPanel.tsx",
+        "client/src/components/WmkEvidenceStudio.tsx"
+      ],
+      "tests": [
+        "Gerar prompt de NF-e, logs, XML/JSON e bug de software",
+        "Opt-in para inserir os post-its na consulta",
+        "Redacao parcial de CNPJ/CPF/chave NFe/segredos",
+        "Copiar consulta sem chamar APIs externas",
+        "Verificar que nunca envia automaticamente arquivos ou capturas",
+        "Validar compilacao TS e testes na interface"
+      ],
+      "notes": "Primeira etapa, sem integração com API de IA. Provedores Ollama/Groq/OpenAI/Gemini, autenticação, custos e proteção de privacidade ainda pendentes."
+    },
+    {
+      "id": "ai-provider-engine",
+      "area": "Inteligencia Artificial",
+      "title": "Integracao opcional de provedores Ollama, Groq, OpenAI e Gemini",
+      "status": "planejado",
+      "priority": "P2",
+      "tests": [
+        "Credenciais guardadas somente em backend local seguro",
+        "Selecao de modelo e limites de custo/tokens",
+        "Consentimento para cada arquivo/print enviado",
+        "Nenhum dado enviado por padrao",
+        "Modo sem IA e IA local",
+        "Timeout, cancelamento e log de proveniencia"
+      ]
     }
   ]
 }
