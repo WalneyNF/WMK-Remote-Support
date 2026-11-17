@@ -100,9 +100,15 @@ A implementação será bidirecional, com seleção explícita dos arquivos, con
 
 Consulte também o [guia de funcionalidades e testes](manuais/o-que-existe.html) e o [plano de transferência de arquivos](manuais/transferencia-e-testes.md).
 
+## Evidências de suporte — captura de tela
+
+O botão **Capturar tela** foi implementado na barra de ferramentas da sessão remota. Ele solicita um PNG do quadro remoto decodificado, com nome sugerido `WMK-Captura-CODIGO-DATA.png`. Quando o sistema suporta o seletor nativo, você escolhe a pasta e o nome; caso contrário, o navegador disponibiliza o download. A funcionalidade depende de conexão ativa e **ainda requer teste em ambiente real**.
+
+A transferência de arquivos **ainda não existe** e não deve ser confundida com o recurso de captura ou com a área de transferência de texto. Sua implementação segura e bidirecional é prioridade P0 do [roadmap](manuais/roadmap.html).
+
 ## Evolução WMK
 
-Consulte [ROADMAP.md](ROADMAP.md) para a lista de melhorias planejadas e critérios de validação.
+Consulte o [roadmap interativo em HTML](manuais/roadmap.html), o [estado de evolução JSON](manuais/evolucao.json) e o [ROADMAP.md](ROADMAP.md) para as prioridades e os critérios de validação.
 
 ## Segurança e consentimento
 
