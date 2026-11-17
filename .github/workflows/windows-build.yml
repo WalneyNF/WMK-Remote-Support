@@ -1,0 +1,58 @@
+name: Windows - compilacao WMK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, "wmk/**"]
+    paths:
+      - "client/**"
+      - "crates/**"
+      - ".github/workflows/windows-build.yml"
+  pull_request:
+    paths:
+      - "client/**"
+      - "crates/**"
+      - ".github/workflows/windows-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    env:
+      AIRHAND_SERVER: "127.0.0.1:4433"
+      AIRHAND_SERVER_FP: ""
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: client/src-tauri -> target
+      - name: Instalar CMake
+        uses: lukka/get-cmake@latest
+      - name: Instalar dependencias JS
+        working-directory: client
+        run: npm ci
+      - name: Testar frontend
+        working-directory: client
+        run: npm test
+      - name: Compilar instalador NSIS
+        working-directory: client
+        run: npm run tauri build
+      - name: Publicar instalador como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: WMK-Remote-Support-Windows-teste
+          path: client/src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+          retention-days: 14
