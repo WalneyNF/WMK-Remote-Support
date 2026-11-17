@@ -192,6 +192,91 @@
         "Preferências persistentes",
         "Sem redução de segurança nos padrões"
       ]
+    },
+    {
+      "id": "record-session-video",
+      "area": "Auditoria",
+      "title": "Gravacao visivel e autorizada da tela remota",
+      "status": "planejado",
+      "priority": "P0",
+      "paths": [
+        "client/src/lib/console-worker.ts",
+        "client/src/lib/video.ts",
+        "client/src/lib/console.ts",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Aprovacao valida antes de iniciar a captura",
+        "Indicador persistente para cliente e tecnico",
+        "Inicio, pausa, continuacao e parada",
+        "Arquivo reproduzivel MP4/WebM sem codec proprietario",
+        "Multimonitor por sessao",
+        "Controle de uso de CPU/RAM e crescimento do arquivo",
+        "Queda de energia deixa fragmentos recuperaveis",
+        "Cliente pode interromper o compartilhamento imediatamente",
+        "Nao gravar sem permissao ou no modo de tela privada"
+      ]
+    },
+    {
+      "id": "audit-trail",
+      "area": "Auditoria",
+      "title": "Trilha de auditoria de acesso e operacoes",
+      "status": "planejado",
+      "priority": "P0",
+      "paths": [
+        "client/src-tauri/",
+        "manuais/"
+      ],
+      "tests": [
+        "Usuario e equipamento identificados com chave publica",
+        "Data e hora UTC com duracao",
+        "Eventos de aprovar, negar, conectar, desconectar, arquivo, gravacao e captura",
+        "Integridade por SHA-256 e encadeamento de eventos",
+        "Retencao definida por cliente/empresa",
+        "Exportacao ZIP com manifesto e hash",
+        "Acesso por perfil e criptografia em repouso"
+      ]
+    },
+    {
+      "id": "evidence-library",
+      "area": "Auditoria",
+      "title": "Biblioteca local de evidencias por cliente e atendimento",
+      "status": "planejado",
+      "priority": "P1",
+      "tests": [
+        "Pasta selecionavel",
+        "Video, PNG, relatorio e manifesto reunidos",
+        "Busca e indexacao por empresa/computador",
+        "Arquivos protegidos e exclusao por prazo configuravel"
+      ]
+    },
+    {
+      "id": "record-policy",
+      "area": "Segurança",
+      "title": "Politica de gravacao transparente por empresa e sessao",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Informar objetivo e retencao antes de gravar",
+        "Sem gravação oculta",
+        "Revogacao de autorizacao interrompe novos quadros",
+        "Restringir acesso aos arquivos gravados",
+        "Adequacao da base legal com assessoria LGPD"
+      ]
+    },
+    {
+      "id": "file-transfer-safe",
+      "area": "Transferencia",
+      "title": "Gerenciador bidirecional FTP-like com autorizacao e hashes",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Arquivos grandes e extensoes arbitrarias",
+        "Pausar e cancelar",
+        "Manter mouse e video responsivos",
+        "Bloquear travessia de diretorios",
+        "Hash do arquivo final e consentimento visivel"
+      ]
     }
   ]
 }
