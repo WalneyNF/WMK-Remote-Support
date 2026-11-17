@@ -217,6 +217,54 @@ export function SessionView({ s }: { s: RemoteSession }) {
     s.focus();
   };
 
+  const [savingScreenshot, setSavingScreenshot] = useState(false);
+
+  const saveScreenshot = async () => {
+    if (savingScreenshot || s.state !== "live") return;
+    setSavingScreenshot(true);
+    try {
+      const image = await s.captureRemoteScreen();
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const filename = `WMK-Captura-${s.code}-${timestamp}.png`;
+      // File System Access API: oferece a seleção da pasta/nome em ambientes compatíveis.
+      type SaveHandle = { createWritable(): Promise<{ write(data: Blob): Promise<void>; close(): Promise<void> }> };
+      const picker = (window as Window & { showSaveFilePicker?: (options: {
+        suggestedName: string;
+        types: { description: string; accept: Record<string, string[]> }[];
+      }) => Promise<SaveHandle> }).showSaveFilePicker;
+      if (picker) {
+        try {
+          const handle = await picker({
+            suggestedName: filename,
+            types: [{ description: "Imagem PNG", accept: { "image/png": [".png"] } }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(image);
+          await writable.close();
+          setToast("Captura salva na pasta escolhida.");
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          throw error;
+        }
+      } else {
+        // Navegadores sem seletor nativo salvam pela pasta configurada no navegador.
+        const url = URL.createObjectURL(image);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+        setToast("Captura enviada para download. Confira a pasta do navegador.");
+      }
+    } catch (error) {
+      setToast(error instanceof Error ? error.message : "Não foi possível capturar a tela.");
+    } finally {
+      setSavingScreenshot(false);
+    }
+  };
+
   const typeClipboard = async () => {
     try {
       const text = await api.localClipboardText();
@@ -305,6 +353,9 @@ export function SessionView({ s }: { s: RemoteSession }) {
         </div>
 
         <div className="tb-right">
+          <button className="tb-btn" type="button" disabled={!live || savingScreenshot} onClick={() => void saveScreenshot()} title="Capturar a tela remota em PNG para um relatório de suporte">
+            <span>{savingScreenshot ? "Salvando..." : "Capturar tela"}</span>
+          </button>
           {s.displays.length > 1 && (
             <div className="menu-anchor">
               <button className="tb-btn" onClick={() => toggleMenu("display")} title={t("session.switchDisplay")}>
