@@ -139,6 +139,158 @@ pub fn validate_chunk(data: &[u8]) -> Result<(), FileValidationError> {
     }
 }
 
+/// Limites conservadores; um aplicativo pode escolher cotas menores por cliente.
+pub const MAX_ACTIVE_TRANSFERS: usize = 4;
+
+/// Uma autorização não é global: vale somente para o escopo concedido pelo host
+/// e para as direções aceitas. A implementação de disco continua separada.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct GrantedScope {
+    pub id: u64,
+    pub allow_upload: bool,
+    pub allow_download: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TransferGuardError {
+    Unauthorized,
+    InvalidDirection,
+    InvalidHash,
+    InvalidPath,
+    LimitExceeded,
+    UnknownTransfer,
+    NotApproved,
+    OffsetMismatch,
+    InvalidChunk,
+    Incomplete,
+    DuplicateTransfer,
+}
+
+/// Máquina de estados de autorização e progresso. Não armazena conteúdo,
+/// não toca o disco e não confia em offsets/nomes enviados pela outra ponta.
+#[derive(Default)]
+pub struct TransferGuard {
+    scopes: std::collections::HashMap<u64, GrantedScope>,
+    transfers: std::collections::HashMap<u64, TransferState>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct TransferState {
+    size: u64,
+    next_offset: u64,
+    approved: bool,
+    scope_id: u64,
+}
+
+impl TransferGuard {
+    /// Chamar APENAS depois de a interface do host confirmar a autorização.
+    pub fn grant(&mut self, scope: GrantedScope) {
+        self.scopes.insert(scope.id, scope);
+    }
+
+    /// O host pode revogar a qualquer momento; todas as transferências caem.
+    pub fn revoke(&mut self, scope_id: u64) {
+        self.scopes.remove(&scope_id);
+        self.transfers.retain(|_, t| t.scope_id != scope_id);
+    }
+
+    /// direction: 0 = técnico → host, 1 = host → técnico.
+    pub fn offer(
+        &mut self,
+        transfer_id: u64,
+        scope_id: u64,
+        direction: u8,
+        relative_path: &str,
+        size: u64,
+        expected_sha256: &[u8],
+    ) -> Result<(), TransferGuardError> {
+        let scope = self.scopes.get(&scope_id).ok_or(TransferGuardError::Unauthorized)?;
+        let allowed = match direction {
+            0 => scope.allow_upload,
+            1 => scope.allow_download,
+            _ => return Err(TransferGuardError::InvalidDirection),
+        };
+        if !allowed {
+            return Err(TransferGuardError::Unauthorized);
+        }
+        validate_relative_path(relative_path).map_err(|_| TransferGuardError::InvalidPath)?;
+        for part in relative_path.split('/') {
+            validate_file_name(part).map_err(|_| TransferGuardError::InvalidPath)?;
+        }
+        if expected_sha256.len() != 32 {
+            return Err(TransferGuardError::InvalidHash);
+        }
+        if self.transfers.contains_key(&transfer_id) {
+            return Err(TransferGuardError::DuplicateTransfer);
+        }
+        if self.transfers.len() >= MAX_ACTIVE_TRANSFERS || size == 0 {
+            return Err(TransferGuardError::LimitExceeded);
+        }
+        self.transfers.insert(transfer_id, TransferState {
+            size,
+            next_offset: 0,
+            approved: false,
+            scope_id,
+        });
+        Ok(())
+    }
+
+    pub fn approve(&mut self, transfer_id: u64) -> Result<(), TransferGuardError> {
+        let state = self.transfers.get_mut(&transfer_id)
+            .ok_or(TransferGuardError::UnknownTransfer)?;
+        if !self.scopes.contains_key(&state.scope_id) {
+            return Err(TransferGuardError::Unauthorized);
+        }
+        state.approved = true;
+        Ok(())
+    }
+
+    /// Valida somente os metadados do bloco. O host deve gravar em arquivo
+    /// temporário e conferir SHA-256 real antes de confirmar a conclusão.
+    pub fn chunk(
+        &mut self,
+        transfer_id: u64,
+        offset: u64,
+        bytes: &[u8],
+    ) -> Result<u64, TransferGuardError> {
+        let state = self.transfers.get_mut(&transfer_id)
+            .ok_or(TransferGuardError::UnknownTransfer)?;
+        if !self.scopes.contains_key(&state.scope_id) {
+            return Err(TransferGuardError::Unauthorized);
+        }
+        if !state.approved {
+            return Err(TransferGuardError::NotApproved);
+        }
+        validate_chunk(bytes).map_err(|_| TransferGuardError::InvalidChunk)?;
+        if offset != state.next_offset {
+            return Err(TransferGuardError::OffsetMismatch);
+        }
+        let end = offset.checked_add(bytes.len() as u64)
+            .ok_or(TransferGuardError::LimitExceeded)?;
+        if end > state.size {
+            return Err(TransferGuardError::LimitExceeded);
+        }
+        state.next_offset = end;
+        Ok(end)
+    }
+
+    /// Só confirma se a quantidade exata chegou; o executor de disco deve
+    /// conferir também o SHA-256 antes de chamar esta função.
+    pub fn complete(&mut self, transfer_id: u64) -> Result<(), TransferGuardError> {
+        let state = self.transfers.get(&transfer_id)
+            .ok_or(TransferGuardError::UnknownTransfer)?;
+        if !state.approved || state.next_offset != state.size {
+            return Err(TransferGuardError::Incomplete);
+        }
+        self.transfers.remove(&transfer_id);
+        Ok(())
+    }
+
+    pub fn cancel(&mut self, transfer_id: u64) {
+        self.transfers.remove(&transfer_id);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -193,4 +345,37 @@ mod tests {
             minicbor::decode(&minicbor::to_vec(&msg).unwrap()).unwrap();
         assert_eq!(decoded, msg);
     }
+
+    #[test]
+    fn must_authorize_each_transfer() {
+        let mut g = TransferGuard::default();
+        let sha = [0xBB; 32];
+        assert_eq!(g.offer(7, 11, 0, "NFe/arquivo.xml", 4, &sha),
+            Err(TransferGuardError::Unauthorized));
+        g.grant(GrantedScope { id: 11, allow_upload: true, allow_download: false });
+        assert_eq!(g.offer(7, 11, 1, "NFe/arquivo.xml", 4, &sha),
+            Err(TransferGuardError::Unauthorized));
+        g.offer(7, 11, 0, "NFe/arquivo.xml", 4, &sha).unwrap();
+        assert_eq!(g.chunk(7, 0, &[1]), Err(TransferGuardError::NotApproved));
+        g.approve(7).unwrap();
+        assert_eq!(g.chunk(7, 0, &[1,2]), Ok(2));
+        assert_eq!(g.chunk(7, 0, &[3]), Err(TransferGuardError::OffsetMismatch));
+        assert_eq!(g.complete(7), Err(TransferGuardError::Incomplete));
+        assert_eq!(g.chunk(7, 2, &[3,4]), Ok(4));
+        g.complete(7).unwrap();
+        assert_eq!(g.chunk(7, 4, &[5]), Err(TransferGuardError::UnknownTransfer));
+    }
+
+    #[test]
+    fn revocation_stops_all_transfers() {
+        let mut g = TransferGuard::default();
+        g.grant(GrantedScope { id: 3, allow_upload: true, allow_download: true });
+        g.offer(10, 3, 0, "Atualizacao.zip", 3, &[3; 32]).unwrap();
+        g.approve(10).unwrap();
+        g.revoke(3);
+        assert_eq!(g.chunk(10, 0, &[1]), Err(TransferGuardError::UnknownTransfer));
+        assert_eq!(g.offer(11, 3, 0, "Atualizacao.zip", 3, &[3; 32]),
+            Err(TransferGuardError::Unauthorized));
+    }
+
 }
