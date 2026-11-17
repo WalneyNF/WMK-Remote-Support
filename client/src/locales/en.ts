@@ -4,7 +4,7 @@ import type { Msg, MsgKey, Params } from "../lib/i18n.ts";
 const plural = (n: Params[string], one: string, many: string) => (Number(n) === 1 ? one : many);
 
 const en: Record<MsgKey, Msg> = {
-  "app.title": "Airhand Console",
+  "app.title": "WMK Remote Support — Console",
 
   "common.connecting": "Connecting…",
   "common.disconnected": "Disconnected",
