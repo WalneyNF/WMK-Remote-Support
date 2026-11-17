@@ -108,6 +108,8 @@ O botão **Capturar tela** foi implementado na barra de ferramentas da sessão r
 
 A transferência de arquivos **ainda não existe** e não deve ser confundida com o recurso de captura ou com a área de transferência de texto. Sua implementação segura e bidirecional é prioridade P0 do [roadmap](manuais/roadmap.html).
 
+📹 **[Gravação e auditoria de sessões](manuais/gravacao-auditoria.html)** — estudo técnico sobre vídeo, relatórios, integridade, consentimento e política empresarial. **Funcionalidade planejada: ainda não disponível no aplicativo.**
+
 ## Evolução WMK
 
 Consulte o [roadmap interativo em HTML](manuais/roadmap.html), o [estado de evolução JSON](manuais/evolucao.json) e o [ROADMAP.md](ROADMAP.md) para as prioridades e os critérios de validação.
