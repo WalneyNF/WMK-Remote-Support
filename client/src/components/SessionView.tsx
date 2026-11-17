@@ -27,6 +27,7 @@ import {
 } from "./Icons";
 import { Popover } from "./Popover";
 import { QualityPanel, fmtKbps } from "./QualityPanel";
+import { LabRecorder } from "./LabRecorder";
 
 /** 把会话的 canvas 挂到当前位置（同一时刻只会挂在一个地方） */
 export function CanvasHost({ s, interactive }: { s: RemoteSession; interactive: boolean }) {
@@ -353,6 +354,7 @@ export function SessionView({ s }: { s: RemoteSession }) {
         </div>
 
         <div className="tb-right">
+          {api.kind === "web" && <LabRecorder session={s} />}
           <button className="tb-btn" type="button" disabled={!live || savingScreenshot} onClick={() => void saveScreenshot()} title="Capturar a tela remota em PNG para um relatório de suporte">
             <span>{savingScreenshot ? "Salvando..." : "Capturar tela"}</span>
           </button>
