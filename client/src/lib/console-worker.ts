@@ -43,7 +43,9 @@ export type ToWorker =
   /** 声音时钟：被控端 hostUs 采集的声音在 at（performance.timeOrigin 时基的绝对时间，毫秒）被听到 */
   | { t: "clock"; id: number; hostUs: number; at: number; appliedMs: number }
   /** 主线程要关键帧（例如刚切回这个会话） */
-  | { t: "keyframe"; id: number };
+  | { t: "keyframe"; id: number }
+  /** Captura PNG da imagem remota já decodificada, sem solicitar permissões de captura do desktop local. */
+  | { t: "snapshot"; id: number; requestId: number };
 
 /** Worker → 主线程 */
 export type FromWorker =
@@ -58,7 +60,8 @@ export type FromWorker =
   | { t: "undecodable"; id: number; codec: Codec }
   | { t: "recovered"; id: number }
   /** 约每秒一次：平均解码耗时、音画同步 */
-  | { t: "stats"; id: number; decodeMs: number; sync: AvSyncStats };
+  | { t: "stats"; id: number; decodeMs: number; sync: AvSyncStats }
+  | { t: "snapshot"; id: number; requestId: number; blob?: Blob; error?: string };
 
 /** 往控制端服务排着没发出去的超过这么多就断开（那边已经不收了） */
 const MAX_BUFFERED = 2 * 1024 * 1024;
@@ -81,6 +84,7 @@ interface Chan {
 /** 一个会话的画面和声音 */
 class View {
   readonly id: number;
+  readonly canvas: OffscreenCanvas;
   readonly sync = new AvSync();
   readonly audio = new AudioStream();
   /** 本机麦克风：编好的声音包发给控制端服务（还没连上、不知道 sid 时丢掉） */
@@ -95,6 +99,7 @@ class View {
 
   constructor(id: number, canvas: OffscreenCanvas) {
     this.id = id;
+    this.canvas = canvas;
     this.video = new VideoPlayer({
       canvas,
       ctx: canvas.getContext("2d", { alpha: false, desynchronized: true })!,
@@ -255,6 +260,17 @@ self.onmessage = (e: MessageEvent<ToWorker>) => {
     return;
   }
   switch (m.t) {
+    case "snapshot":
+      // Somente imagem da sessão já desenhada; sem acesso a outros monitores ou arquivos do host.
+      if (!view.chan || view.canvas.width < 1 || view.canvas.height < 1) {
+        post({ t: "snapshot", id: m.id, requestId: m.requestId, error: "Tela remota indisponível." });
+        return;
+      }
+      void view.canvas.convertToBlob({ type: "image/png" }).then(
+        (blob) => post({ t: "snapshot", id: m.id, requestId: m.requestId, blob }),
+        () => post({ t: "snapshot", id: m.id, requestId: m.requestId, error: "Não foi possível capturar a tela." }),
+      );
+      return;
     case "drop":
       if (view.chan) unbind(view.chan.ch);
       view.video.dispose();
