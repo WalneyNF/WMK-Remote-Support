@@ -15,7 +15,7 @@ O **WMK Remote Support** é uma iniciativa de transformar um software de desktop
 
 O mecanismo existente utiliza **QUIC/TLS 1.3**, criptografia ponta a ponta entre os dispositivos, codecs **AV1 / HEVC / H.264** quando suportados, conexão direta quando possível e retransmissão por servidor próprio como alternativa. O software cliente utiliza **Rust + Tauri 2 + React/TypeScript**. O aplicativo Android utiliza **Kotlin** e um núcleo em Rust.
 
-## Funcionalidades existentes herdadas do Airhand
+## Funcionalidades existentes no núcleo do WMK Remote Support
 
 - Controle de tela, mouse e teclado;
 - Conexão por código de controle de seis dígitos e pareamento inicial;
@@ -38,7 +38,7 @@ As funcionalidades acima constam no código/documentação do projeto base; **n�
 - O console web exige um serviço adicional, e o serviço pode visualizar o conteúdo descriptografado das sessões.
 - Rede corporativa e bloqueio de UDP podem impedir caminho direto; o relay continua necessário.
 - O servidor requer configuração e porta **UDP 4433**.
-- O aplicativo ainda não está totalmente traduzido para português.
+- A interface do aplicativo ainda não está totalmente traduzida para português.
 
 Veja [limitações técnicas](docs/limitations.md) e [segurança](docs/security.md) no material original, disponível em inglês.
 
@@ -46,7 +46,7 @@ Veja [limitações técnicas](docs/limitations.md) e [segurança](docs/security.
 
 ### 1. Infraestrutura de comunicação
 
-O Airhand requer um servidor intermediário acessível por ambos os computadores. O arquivo `docker-compose.yml` original descreve o serviço; o servidor mantém certificado e banco de códigos no diretório persistente `data/`.
+O WMK Remote Support requer um servidor intermediário acessível por ambos os computadores. O arquivo `docker-compose.yml` original descreve o serviço; o servidor mantém certificado e banco de códigos no diretório persistente `data/`.
 
 ```bash
 docker compose up -d
@@ -82,6 +82,24 @@ Na aba **Actions**, selecione **Windows — compilação WMK** e execute **Run w
 
 Artefatos de Actions **não são automaticamente Releases públicas**. Primeiro validaremos a compilação e as conexões.
 
+## Transferência de arquivos e tempo de sessão
+
+**Transferência de arquivos (em desenvolvimento):** pretendemos permitir enviar arquivos do computador do técnico para o cliente e baixar arquivos autorizados do cliente. Isso ainda **não está disponível no protocolo atual**. Não confundir com a área de transferência de texto existente.
+
+A implementação será bidirecional, com seleção explícita dos arquivos, confirmação do cliente, barra de progresso, cancelamento, hash SHA-256, limites de tamanho configuráveis, proteção contra caminhos indevidos e registro do atendimento. A transferência precisa ocorrer dentro da sessão criptografada; não enviaremos arquivos para armazenamento público no relay.
+
+**Duração da sessão:** o console apresenta um contador de tempo conectado, sem limite de tempo artificial. Ele soma apenas o período em que a sessão está ativa, não o tempo offline ou aguardando autorização. A sessão ainda pode cair por rede, término solicitado pelo cliente, recursos do servidor ou desligamento do PC.
+
+## Como testar e acessar pelo celular
+
+1. Configure um servidor relay acessível (UDP 4433) e distribua clientes que confiem no fingerprint do certificado.
+2. Instale o aplicativo em dois computadores próprios. No computador do cliente, obtenha o código de controle e o código de pareamento; no computador do técnico, selecione o modo controlador e digite os códigos.
+3. Teste tela, mouse, teclado, áudio, várias telas, reconexão e o cronômetro. Em apenas **um PC**, o teste de si próprio pode gerar efeito de espelhos e não substitui um teste entre duas máquinas; prefira outra máquina física ou VM.
+4. Para controlar pelo **Android**, compile/instale o aplicativo em `android/`, configurado para o mesmo relay, e conecte usando o código remoto. O suporte Android está documentado em [docs/android.md](docs/android.md). O aplicativo de celular ainda não possui nossa identidade e tradução completas.
+5. Para controlar por **navegador**, é necessário configurar o serviço em `web/` com HTTPS/WebCodecs; não basta visitar a página do GitHub.
+
+Consulte também o [guia de funcionalidades e testes](manuais/o-que-existe.html) e o [plano de transferência de arquivos](manuais/transferencia-e-testes.md).
+
 ## Evolução WMK
 
 Consulte [ROADMAP.md](ROADMAP.md) para a lista de melhorias planejadas e critérios de validação.
@@ -94,7 +112,7 @@ O acesso remoto exige autorização, identificação do técnico, possibilidade 
 
 **WMK Remote Support — personalização e desenvolvimento:** Walney Moreira Klein — walneyk@hotmail.com.
 
-**Projeto original:** [Airhand, por sqlpxc](https://github.com/sqlpxc/airhand).
+**Créditos históricos e licença:** [projeto original, por sqlpxc](https://github.com/sqlpxc/airhand).
 
 **Licença:** MIT. O arquivo [LICENSE](LICENSE) mantém os direitos autorais originais. As mudanças WMK devem preservar as notas e atribuições exigidas por essa licença.
 
