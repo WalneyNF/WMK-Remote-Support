@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Manual de primeiro contato e inventário técnico do WMK Remote Support">
+<title>WMK Remote Support | O que já existe</title>
+<style>
+:root{color-scheme:dark;--bg:#090e1e;--pane:#111b32;--line:#30405f;--text:#edf3ff;--muted:#aebbd2;--cyan:#49dffa;--purple:#af80ff;--green:#73ddb0;--amber:#ffcf83}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 0%,#322058 0%,transparent 42%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,'Segoe UI',sans-serif}
+a{color:var(--cyan)}.wrap{max-width:1220px;margin:auto;padding:24px}header{border-bottom:1px solid var(--line);background:#0e1530cc}.hero{display:flex;align-items:center;gap:24px}.hero img{width:112px;height:112px;object-fit:contain}.eyebrow{letter-spacing:.18em;color:var(--cyan);font-weight:700;font-size:.75rem}h1{font-size:clamp(2rem,4vw,3.3rem);line-height:1.15;margin:5px 0}h2{color:var(--cyan);margin:36px 0 12px;font-size:1.55rem}h3{color:#e1d2ff;margin:20px 0 8px}p{margin:8px 0 15px}.sub{color:var(--muted)}nav{display:flex;flex-wrap:wrap;gap:8px;padding:18px 0}nav a{border:1px solid var(--line);border-radius:100px;padding:5px 13px;text-decoration:none;color:var(--text);font-size:.88rem}.panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,#14203d,#10162b);padding:22px;margin:14px 0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:13px}.card{border:1px solid var(--line);border-radius:13px;padding:17px;background:#101a30}.card h3{margin-top:0}.tag{display:inline-block;border:1px solid #355a5d;border-radius:10px;padding:1px 9px;color:var(--green);font-size:.8rem}.planned{color:var(--amber);border-color:#665033}.warn{border-left:4px solid var(--amber)}.good{border-left:4px solid var(--green)}table{width:100%;border-collapse:collapse;min-width:690px}th,td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--cyan);background:#172344}.scroll{overflow-x:auto}code,pre{background:#080f21;border-radius:5px;color:#c9ecff}code{padding:2px 5px}pre{padding:17px;overflow:auto;white-space:pre-wrap}.diagram{text-align:center;letter-spacing:.02em}button{border:1px solid #5681a3;background:#183d62;color:white;border-radius:9px;padding:8px 14px;cursor:pointer}footer{border-top:1px solid var(--line);margin-top:45px;padding:22px 0;color:var(--muted)}small{color:var(--muted)}ul{padding-left:22px}li{margin:5px 0}@media print{body{background:white;color:black}header,.panel,.card{background:white;color:black}nav,button{display:none}h2{color:#173e6c}a{color:#005b99}table{min-width:0}}
+</style></head><body>
+<header><div class="wrap"><div class="hero"><img src="../assets/wmk-remote-support.svg" alt="Símbolo WMK Remote Support"><div><div class="eyebrow">GUIA DE PRIMEIRO CONTATO • 17/11/2026</div><h1>WMK Remote Support</h1><p class="sub">O que já existe no código, o que foi personalizado e o que falta desenvolver</p></div></div>
+<nav aria-label="Navegação"><a href="#resumo">Resumo</a><a href="#recursos">Recursos</a><a href="#arquitetura">Arquitetura</a><a href="#plataformas">Plataformas</a><a href="#utilizacao">Como usar</a><a href="#limites">Limitações</a><a href="#wmk">Versão WMK</a><a href="#proximos">Próximos passos</a><a href="#licenca">Licença</a></nav>
+<button onclick="window.print()">Imprimir / salvar em PDF</button></div></header>
+<main class="wrap">
+<section id="resumo"><h2>1. O que é este projeto?</h2>
+<div class="panel good"><strong>O WMK Remote Support já possui uma base real de acesso remoto.</strong> Seu código deriva do Airhand 0.2.3, um projeto em Rust com aplicativo desktop, Android, console web e servidor de retransmissão. Nosso objetivo é especializá-lo em assistência técnica a clientes, sem reescrever desnecessariamente o motor de vídeo e conexões.</div>
+<p>Esta página é um <strong>inventário técnico</strong>, não uma certificação de qualidade. A indicação “já existe” significa que encontramos implementação e/ou documentação correspondente no código. Ainda são necessários testes em máquinas reais para confirmar a estabilidade desta versão WMK.</p>
+<div class="cards">
+<div class="card"><span class="tag">Existe no código</span><h3>Controle de computador</h3><p>Tela remota, mouse, teclado, monitores e sessões simultâneas.</p></div>
+<div class="card"><span class="tag">Existe no código</span><h3>Conectividade</h3><p>Servidor relay, QUIC, tentativas de conexão direta e pareamento por código.</p></div>
+<div class="card"><span class="tag">Existe no código</span><h3>Vídeo e som</h3><p>Codificação por hardware quando disponível, áudio remoto e ajustes de qualidade.</p></div>
+<div class="card"><span class="tag planned">Planejado</span><h3>Central de suporte</h3><p>Cadastro de clientes, chamados, chat, transferência de arquivos, diagnóstico e IA.</p></div>
+</div></section>
+<section id="recursos"><h2>2. Funcionalidades existentes — inventário</h2>
+<div class="scroll"><table><thead><tr><th>Função</th><th>O que oferece</th><th>Onde procurar</th><th>Estado</th></tr></thead><tbody>
+<tr><td>Controle de tela</td><td>Captura e reprodução de desktop, com envio de mouse e teclado</td><td><code>client/src-tauri/src/host/</code></td><td>Implementado; não validado nesta edição</td></tr>
+<tr><td>Vídeo</td><td>H.264, HEVC, AV1 conforme suporte; presets de resolução/FPS/bitrate; até 120 FPS anunciados</td><td><code>host/encoder/</code>, <code>client/src/lib/video.ts</code></td><td>Implementado; desempenho depende do hardware</td></tr>
+<tr><td>Conexão</td><td>QUIC/TLS 1.3, retransmissão e tentativa de rota direta entre dispositivos</td><td><code>crates/airhand-link/</code>, <code>server/</code></td><td>Implementado; necessita relay configurado</td></tr>
+<tr><td>Pareamento</td><td>Código de controle de seis dígitos e código de pareamento inicial</td><td><code>crates/airhand-proto/</code>, <code>docs/security.md</code></td><td>Implementado no desktop</td></tr>
+<tr><td>Proteção de sessão</td><td>Criptografia ponta a ponta entre host e controlador; fingerprint do servidor</td><td><code>crates/airhand-link/src/secure.rs</code></td><td>Desenho documentado; requer auditoria</td></tr>
+<tr><td>Vários acessos</td><td>Abas para diversas sessões e visão geral de telas</td><td><code>client/src/components/GridView.tsx</code></td><td>Implementado</td></tr>
+<tr><td>Área de transferência</td><td>Sincronização de texto nos dois sentidos</td><td><code>client/src-tauri/src/clipboard.rs</code></td><td>Implementado; não transfere arquivos</td></tr>
+<tr><td>Áudio</td><td>Captura de áudio do host, reprodução no controlador e sincronização opcional</td><td><code>host/audio/</code></td><td>Implementado com limitações por plataforma</td></tr>
+<tr><td>Windows como serviço</td><td>Acesso à tela de entrada e a prompts UAC em instalação apropriada</td><td><code>client/src-tauri/src/winsvc/</code></td><td>Implementado; exige cuidado com privilégio SYSTEM</td></tr>
+<tr><td>Console pelo navegador</td><td>Controle remoto usando navegador com serviço web próprio</td><td><code>web/</code></td><td>Implementado; não dispensa infraestrutura</td></tr>
+<tr><td>Android</td><td>Controle remoto, compartilhamento de tela, gestos e modo de visualização para TV</td><td><code>android/</code></td><td>Implementado; permissões do Android limitam operações</td></tr>
+<tr><td>Teste/empacotamento</td><td>Testes em TypeScript/Rust e configuração de instalador Windows NSIS</td><td><code>client/tests/</code>, <code>client/src-tauri/tauri.conf.json</code></td><td>Workflow Actions configurado; sucesso não atestado</td></tr>
+</tbody></table></div></section>
+<section id="arquitetura"><h2>3. Como funciona internamente?</h2>
+<div class="panel diagram"><strong>Computador do cliente (HOST)</strong><br>captura tela + áudio e recebe mouse/teclado<br>↕ conexão autenticada e criptografada<br><strong>Servidor relay próprio (QUIC / UDP 4433)</strong><br>identifica e encaminha sessões quando necessário<br>↕ conexão autenticada e criptografada<br><strong>Computador do técnico (CONTROLLER)</strong><br>exibe a tela e envia comandos<br><small>Quando possível, um caminho direto substitui o relay para vídeo/áudio. O relay pode continuar transportando controle e metadados.</small></div>
+<p>O mesmo programa desktop pode atuar como <em>host</em> (ser controlado) ou <em>controlador</em> (acessar outra máquina). O servidor faz o registro dos códigos e encaminha conexões. A comunicação direta depende da configuração de rede, NAT e firewall; ela não é garantida.</p>
+<div class="scroll"><table><thead><tr><th>Pasta</th><th>Responsabilidade</th><th>Tecnologia</th></tr></thead><tbody>
+<tr><td><code>client/src/</code></td><td>Interface e console de sessões</td><td>React / TypeScript</td></tr><tr><td><code>client/src-tauri/</code></td><td>Cliente nativo, captura, serviço e integração com o SO</td><td>Rust / Tauri 2</td></tr>
+<tr><td><code>crates/airhand-proto/</code></td><td>Mensagens e protocolo de comunicação</td><td>Rust</td></tr><tr><td><code>crates/airhand-link/</code></td><td>Transporte e caminhos de rede</td><td>Rust</td></tr><tr><td><code>server/</code></td><td>Identificação, pareamento e relay</td><td>Rust</td></tr><tr><td><code>web/</code></td><td>Console via navegador, com serviço intermediário</td><td>Rust / Web</td></tr><tr><td><code>android/</code></td><td>Aplicativo de telefone/tablet/TV</td><td>Kotlin / Rust</td></tr>
+</tbody></table></div></section>
+<section id="plataformas"><h2>4. Plataformas cobertas pelo projeto base</h2><div class="scroll"><table><thead><tr><th>Sistema</th><th>Host</th><th>Controlador</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Windows 10/11</td><td>Sim</td><td>Sim</td><td>Serviço do sistema para login/UAC; não controla sessões RDP e não envia Ctrl+Alt+Del</td></tr>
+<tr><td>macOS 13+</td><td>Sim</td><td>Sim</td><td>Exige permissões de gravação de tela e acessibilidade; tela bloqueada não controlável</td></tr>
+<tr><td>Linux</td><td>Sim</td><td>Sim</td><td>Host apenas X11; sem captura Wayland completa</td></tr>
+<tr><td>Android 7+</td><td>Sim</td><td>Sim</td><td>Compartilhamento exige confirmação e controle depende da acessibilidade</td></tr>
+<tr><td>Android TV</td><td>Não</td><td>Somente visualizar</td><td>Uso como monitor remoto</td></tr>
+<tr><td>Navegador</td><td>Não</td><td>Sim</td><td>Requer console web com WebCodecs e serviço HTTPS próprio</td></tr>
+</tbody></table></div></section>
+<section id="utilizacao"><h2>5. Primeiros passos para testar</h2>
+<ol><li><strong>Preparar relay.</strong> É necessário um servidor acessível às duas máquinas, por exemplo uma VM Linux. O projeto fornece <code>docker-compose.yml</code>. O relay usa UDP 4433.</li>
+<li><strong>Verificar certificado.</strong> Registrar e fixar o fingerprint SHA-256 do certificado do relay nos clientes. Não distribuir releases com certificado não configurado.</li>
+<li><strong>Compilar.</strong> No Windows, usar o workflow GitHub Actions ou compilar com Rust, Node.js, CMake e MSVC. A configuração Tauri aponta para pacote NSIS.</li>
+<li><strong>Instalar em máquinas autorizadas.</strong> Testar primeiro em dois computadores próprios antes de atender clientes.</li>
+<li><strong>Conectar.</strong> Obter código de controle no host; informar no controlador; fazer o pareamento inicial e verificar que o host pode desconectar.</li>
+<li><strong>Medir desempenho.</strong> Testar conexão LAN e internet, uso de CPU/RAM, latência, mudança de resolução, bloqueio de tela e reconexão.</li></ol>
+<pre>git clone https://github.com/WalneyNF/WMK-Remote-Support.git
+cd WMK-Remote-Support/client
+npm ci
+# Ajuste AIRHAND_SERVER e AIRHAND_SERVER_FP para seu relay confiável.
+npm run tauri build</pre>
+<div class="panel warn"><strong>Importante:</strong> o workflow atual pode usar <code>127.0.0.1:4433</code> como endereço de teste. Um instalador gerado com isso não estará pronto para suporte via internet. Publicação para clientes exige relay público estável, fingerprint confiável e testes de segurança.</div></section>
+<section id="limites"><h2>6. O que ainda não existe ou não está completo?</h2><div class="cards">
+<div class="card"><h3>Transferir arquivos</h3><span class="tag planned">Não implementado</span><p>Hoje há área de transferência de <strong>texto</strong>, não um gerenciador de arquivos remoto.</p></div>
+<div class="card"><h3>Chat e chamados</h3><span class="tag planned">Planejado</span><p>Não há plataforma de ticket, atendimento, chat corporativo ou cadastro de empresas.</p></div>
+<div class="card"><h3>Diagnóstico técnico</h3><span class="tag planned">Planejado</span><p>Painéis de saúde de disco, serviços, impressoras, rede e aplicativos ainda precisam de módulos próprios.</p></div>
+<div class="card"><h3>Assistente IA</h3><span class="tag planned">Planejado</span><p>Não existe integração WMK com Groq/Ollama para análise de erros e orientação de suporte.</p></div>
+<div class="card"><h3>Idioma brasileiro completo</h3><span class="tag planned">Parcial</span><p>README inicial em pt-BR; frontend mantém catálogos inglês/chinês e Rust possui idiomas internos próprios.</p></div>
+<div class="card"><h3>Identidade final</h3><span class="tag planned">Parcial</span><p>Nome e ícone WMK em trechos da interface. Ícones binários do instalador, serviços e identificadores internos ainda usam referências legadas.</p></div>
+</div>
+<p>Outras limitações documentadas: microfone remoto exige condições específicas; acesso direto pode falhar em NAT simétrico; Android não pode iniciar compartilhamento oculto; console web termina a criptografia ponta a ponta no servidor onde é executado.</p></section>
+<section id="wmk"><h2>7. Personalizações WMK já efetuadas</h2>
+<div class="scroll"><table><thead><tr><th>Mudança</th><th>Situação verificada no repositório</th></tr></thead><tbody>
+<tr><td>Repositório <code>WMK-Remote-Support</code></td><td>Renomeado</td></tr>
+<tr><td><code>README.md</code></td><td>Texto introdutório brasileiro e créditos</td></tr>
+<tr><td><code>assets/wmk-remote-support.svg</code></td><td>Ícone vetorial simplificado WMK</td></tr>
+<tr><td><code>client/src/components/Logo.tsx</code></td><td>Referência ao SVG WMK na interface</td></tr>
+<tr><td><code>client/src/components/AppMenu.tsx</code></td><td>Seção Sobre com nome de autor, contato e atribuição original</td></tr>
+<tr><td><code>client/src-tauri/tauri.conf.json</code></td><td>Nome de produto WMK e descrição em português; identificador interno legado mantido</td></tr>
+<tr><td><code>android/app/src/main/res/values/strings.xml</code></td><td>Nome de exibição do aplicativo WMK</td></tr>
+<tr><td><code>.github/workflows/windows-build.yml</code></td><td>Pipeline de build Windows NSIS definido</td></tr>
+</tbody></table></div>
+<p><strong>O que não devemos afirmar:</strong> que o EXE compilou com sucesso, que todas as telas foram traduzidas ou que a arte futurista completa já substituiu os ícones do instalador. Essas validações e alterações ainda são tarefas pendentes.</p></section>
+<section id="proximos"><h2>8. Ordem recomendada de evolução</h2>
+<ol><li><strong>P0 — Estabilização:</strong> conseguir build Windows verde, executar em duas máquinas, certificar o pareamento, testar UAC e reconexão.</li>
+<li><strong>P0 — Segurança:</strong> revisar autorização, permissões, logs, armazenamento de segredos, acesso não assistido e funcionamento do serviço SYSTEM.</li>
+<li><strong>P1 — Localização:</strong> traduzir React, Rust, instalador, menus e Android para pt-BR sem quebrar mensagens de protocolo.</li>
+<li><strong>P1 — Identidade:</strong> atualizar ICO/PNG/ICNS, nome do executável, nome do serviço e estratégia de migração de configurações.</li>
+<li><strong>P2 — Atendimento:</strong> modo suporte rápido, chat, envio de arquivos autorizado, cadastro de cliente e histórico.</li>
+<li><strong>P3 — Produtividade:</strong> diagnóstico de máquinas, relatórios, permissões por técnico, assistente IA opcional e integrações fiscais.</li></ol>
+<p>Veja o planejamento técnico em <a href="../ROADMAP.md">ROADMAP.md</a>. Este documento descreve o estado atual; novas funcionalidades devem ser marcadas como concluídas somente depois de implementadas e testadas.</p></section>
+<section id="licenca"><h2>9. Licença e créditos</h2>
+<div class="panel good"><strong>Licença MIT</strong> — o arquivo <a href="../LICENSE">LICENSE</a> registra <em>Copyright (c) 2026 sqlpxc</em>. A licença permite usar, modificar, copiar e comercializar o software, exigindo preservar o aviso de copyright e o texto da licença em cópias ou partes substanciais. O projeto é disponibilizado sem garantia.</div>
+<p><strong>Personalização WMK:</strong> Walney Moreira Klein — <a href="mailto:walneyk@hotmail.com">walneyk@hotmail.com</a>.</p>
+<p><strong>Projeto original:</strong> <a href="https://github.com/sqlpxc/airhand">Airhand — sqlpxc</a>. Rebranding não remove a autoria original. Licenças de bibliotecas, codecs e outros componentes devem ser conferidas separadamente antes de distribuição comercial.</p></section>
+<section><h2>10. Onde consultar o código</h2><p><a href="https://github.com/WalneyNF/WMK-Remote-Support">Repositório WMK Remote Support</a> · <a href="../docs/architecture.md">Arquitetura original</a> · <a href="../docs/security.md">Segurança original</a> · <a href="../docs/limitations.md">Limitações originais</a> · <a href="https://github.com/WalneyNF/WMK-Remote-Support/actions">Compilações Actions</a></p><small>Documentação elaborada a partir de arquivos e documentação do repositório, consultados em 17/11/2026. Não substitui testes ou auditoria de segurança.</small></section>
+</main><footer><div class="wrap"><strong>WMK Remote Support</strong> · Walney Moreira Klein · walneyk@hotmail.com<br>Projeto derivado do Airhand (sqlpxc) — MIT · Documento em português brasileiro</div></footer>
+</body></html>
