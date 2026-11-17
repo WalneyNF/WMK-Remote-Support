@@ -142,3 +142,9 @@ O acesso remoto exige autorização, identificação do técnico, possibilidade 
 
 ---
 *Este repositório é um projeto independente e não é afiliado a AnyDesk ou TeamViewer.*
+
+## WMK Mini Service Desk — desenvolvedor independente
+
+A branch de testes possui um **MVP local** de cadastro de clientes, computadores e chamados, com notas internas, linha do tempo, prioridades, situação, pesquisa e backup/importação JSON. Acesse **Clientes e chamados — Mini Service Desk** na tela de conexão ou **Chamados** durante a sessão.
+
+**Limite importante:** nesta prévia, os registros ficam apenas em `localStorage` no computador/navegador do técnico. Não é adequado para dados sigilosos de produção, não possui autenticação de equipe, backups automáticos, banco compartilhado, vinculação automática da sessão nem conexão operacional com GLPI. O projeto futuro deverá usar SQLite no backend Rust e integração opcional por API com seu fork do GLPI. Os arquivos XML e dados fiscais completos não devem ser registrados nesse protótipo.
