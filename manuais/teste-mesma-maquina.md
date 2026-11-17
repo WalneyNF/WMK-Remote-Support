@@ -62,7 +62,8 @@ O script mantém uma janela PowerShell aberta. Ao pressionar ENTER, somente os d
 5. Na primeira conexão, informe o código de pareamento, solicitado pelo host.
 6. Confirme a identidade da máquina. O navegador deve abrir a tela remota.
 7. Teste mouse, teclado, cópia de texto, seletor de monitores e, se disponível, o botão **Capturar tela** para criar um PNG.
-8. Observe o contador de tempo. Encerre a sessão pelo console e pelo host.
+8. No console web local, use **Gravar teste** para registrar até 30 segundos da imagem remota em arquivo WebM. É necessário confirmar previamente que você controla/tem autorização sobre o computador do teste; o arquivo será baixado no navegador. A gravação é experimental (poucos quadros por segundo), não registra áudio, não grava indefinidamente e **não substitui auditoria com consentimento no host**.
+9. Observe o contador de tempo. Encerre a sessão pelo console e pelo host.
 
 **Para evitar o efeito espelho infinito**, diminua a janela do navegador, mova-a para uma área da tela e não clique repetidamente na cópia remota dela. Se possível, use um monitor secundário ou VM.
 
@@ -77,7 +78,8 @@ O script mantém uma janela PowerShell aberta. Ao pressionar ENTER, somente os d
 | Capturar PNG | Botão Capturar tela e download/diálogo | Código existente; precisa validar |
 | Cronômetro sem limite | Tempo sobe durante conexão | Código existente; precisa validar |
 | Transferência de arquivos | Enviar/receber em ambas direções | **Não implementado** |
-| Gravação de vídeo auditável | Iniciar, consentir, pausar e salvar | **Não implementado** |
+| Gravação experimental WebM | Até 30 segundos em navegador local, sem áudio | Código de laboratório; precisa de teste |
+| Gravação de vídeo auditável | Aceite no host, iniciar, pausar, auditoria e salvar | **Não implementado** |
 
 Não marque itens como concluídos sem reproduzir os testes. Use [manuais/roadmap.html](roadmap.html) e [manuais/evolucao.json](evolucao.json).
 
