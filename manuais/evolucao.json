@@ -277,6 +277,43 @@
         "Bloquear travessia de diretorios",
         "Hash do arquivo final e consentimento visivel"
       ]
+    },
+    {
+      "id": "local-laboratory",
+      "area": "Testes",
+      "title": "Laboratório Windows na mesma máquina sem Docker",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "tools/teste-local/WMK-Iniciar-Teste.cmd",
+        "tools/teste-local/iniciar-laboratorio.ps1",
+        ".github/workflows/windows-build.yml"
+      ],
+      "tests": [
+        "Build servidor relay Windows",
+        "Build console web Windows",
+        "Start e stop só em loopback",
+        "Console acessa o host instalado",
+        "Não expõe portas à rede"
+      ]
+    },
+    {
+      "id": "lab-recording",
+      "area": "Testes",
+      "title": "Gravação WebM experimental com limite de 30 segundos",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "client/src/components/LabRecorder.tsx",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Só exibe no console localhost",
+        "Pede confirmação do operador",
+        "Exporta arquivo WebM reproduzível",
+        "Parar e terminar quando desconectar",
+        "Não confundir com gravação auditável"
+      ]
     }
   ]
 }
