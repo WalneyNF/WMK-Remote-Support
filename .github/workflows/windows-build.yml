@@ -100,6 +100,7 @@ jobs:
           Copy-Item web/target/release/airhand-web.exe kit/bin/wmk-console-web.exe
           Copy-Item client/dist/* kit/www/ -Recurse -Force
           Copy-Item tools/teste-local/iniciar-laboratorio.ps1 kit/WMK-Teste-Local.ps1
+          Copy-Item tools/teste-local/WMK-Iniciar-Teste.cmd kit/WMK-Iniciar-Teste.cmd
           Copy-Item manuais/teste-mesma-maquina.md kit/LEIA-ME.txt
           if (-not (Test-Path kit/www/index.html)) { throw 'Nao foi encontrado kit/www/index.html' }
           if (-not (Test-Path kit/bin/wmk-relay.exe)) { throw 'Nao foi encontrado o relay Windows' }
