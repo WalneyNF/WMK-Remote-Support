@@ -62,7 +62,14 @@
         "Tentativa de path traversal",
         "Interrupcao e retomada autorizada",
         "Arquivos grandes e nomes Unicode",
-        "Executaveis nao iniciados automaticamente"
+        "Executaveis nao iniciados automaticamente",
+        "Gerenciador com dois paineis local/remoto",
+        "Upload e download com aprovacao do cliente",
+        "Fila de progresso e cancelamento",
+        "Sem perder responsividade de video e comandos",
+        "Ctrl+C e Ctrl+V entre os paineis",
+        "Arrastar/soltar com confirmacao",
+        "Sem sobrescrita ou execucao automatica"
       ]
     },
     {
@@ -280,6 +287,11 @@
         "Manter mouse e video responsivos",
         "Bloquear travessia de diretorios",
         "Hash do arquivo final e consentimento visivel"
+      ],
+      "paths": [
+        "crates/airhand-proto/src/session.rs",
+        "client/src-tauri/",
+        "client/src/components/"
       ]
     },
     {
