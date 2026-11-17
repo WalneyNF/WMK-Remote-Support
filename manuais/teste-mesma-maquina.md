@@ -53,6 +53,10 @@ Se o script estiver bloqueado pela política de execução do Windows, confira s
 
 O script mantém uma janela PowerShell aberta. Ao pressionar ENTER, somente os dois processos que ele iniciou serão encerrados. Os arquivos de teste e logs permanecem no disco.
 
+### Idioma da interface
+
+No console web, abra **Configurações (engrenagem) > Idioma > PT-BR**. A escolha permanece salva neste navegador. Essa é uma tradução inicial da interface React; menus do serviço/ícone da bandeja e algumas opções técnicas ainda podem aparecer em inglês.
+
 ## 4. Primeira sessão na mesma máquina
 
 1. Abra o WMK instalado em **modo host/receber assistência**.
