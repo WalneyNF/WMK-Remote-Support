@@ -69,8 +69,13 @@
         "Sem perder responsividade de video e comandos",
         "Ctrl+C e Ctrl+V entre os paineis",
         "Arrastar/soltar com confirmacao",
-        "Sem sobrescrita ou execucao automatica"
-      ]
+        "Sem sobrescrita ou execucao automatica",
+        "Copiar XML de evento de cancelamento e PDF DANFE preservando bytes",
+        "Conferir XML de protocolo/evento sem alterar documento de origem",
+        "Transferir varios arquivos e diretorios em lote",
+        "Sem tamanho maximo artificial, respeitando espaco e filesystem"
+      ],
+      "notes": "Qualquer arquivo, incluindo TXT/XML de cancelamento NF-e e DANFE PDF, sem limite artificial de extensao; fragmentar dados, cotas configuraveis, retomada autorizada e hash. Ainda nao funcional remotamente."
     },
     {
       "id": "quick-support",
@@ -358,6 +363,67 @@
         "Revogacao interrompe transferencias"
       ],
       "notes": "Fundacao de protocolo apenas: ainda nao integrada ao transporte da sessao, disco remoto ou UI; NAO funciona transferir arquivos."
+    },
+    {
+      "id": "evidence-player",
+      "area": "Auditoria",
+      "title": "Reproduzir videos locais MP4/WebM e extrair quadros em PNG",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkEvidenceStudio.tsx",
+        "client/src/components/SessionView.tsx",
+        "client/src/components/ConnectView.tsx"
+      ],
+      "tests": [
+        "Abrir videos locais compativeis com WebView2",
+        "Retroceder e avancar cinco segundos",
+        "Pausar e salvar PNG na resolucao do video",
+        "Tratar codecs nao suportados",
+        "Nao enviar videos a terceiros"
+      ],
+      "notes": "Player local de videos existentes, nao grava automaticamente a sessao."
+    },
+    {
+      "id": "evidence-postits",
+      "area": "Auditoria",
+      "title": "Post-its com problema observado, plano de correcao, estado e segundo do video",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkEvidenceStudio.tsx"
+      ],
+      "tests": [
+        "Criar anotacao com timestamp da reproducao",
+        "Clicar em anotacao e localizar o instante",
+        "Buscar, excluir, importar e exportar JSON",
+        "Nao guardar XMLs ou dados de clientes involuntariamente"
+      ],
+      "notes": "JSON exportado para equipe; integracao compartilhada multiusuario ainda planejada."
+    },
+    {
+      "id": "fiscal-cancel-evidence",
+      "area": "Transferencia",
+      "title": "Receber TXT de cancelamento, XML de NFe/eventos, DANFE PDF e anexos arbitrarios",
+      "status": "planejado",
+      "priority": "P0",
+      "paths": [
+        "crates/airhand-proto/src/file_transfer.rs",
+        "client/src-tauri/",
+        "client/src/components/"
+      ],
+      "tests": [
+        "Sem restricao por extensao de arquivo",
+        "Transferir TXT XML PDF ZIP EXE DBF FPT CDX nos dois sentidos",
+        "Varios arquivos e pastas em uma operacao",
+        "Arquivos grandes em blocos sem carregamento integral em memoria",
+        "Barra, velocidade, cancelamento e retomada autenticada",
+        "Comparar SHA-256 do arquivo original e recebido",
+        "Tratar falta de espaco e caminhos invalidos",
+        "Consentimento e diretorio autorizado no host",
+        "Nao modificar XML fiscal ou PDF durante copia"
+      ],
+      "notes": "Sem limite arbitrario de extensoes/tamanho no aplicativo, mas sujeito a limites reais de disco, protocolo, rede e filesystem. Ainda nao integrado ao transporte remoto."
     }
   ]
 }
