@@ -15,6 +15,7 @@ import { store, useSession, useStore, type Draft } from "../lib/store";
 /** 这些问题要用户输入配对码（对方的身份变了也是：重新配对才认新的身份） */
 const PAIRING_PROBLEMS = new Set(["pairingRequired", "pairingFailed", "pairingUnavailable", "hostKeyChanged"]);
 import { WmkTextEditor } from "./WmkTextEditor";
+import { WmkEvidenceStudio } from "./WmkEvidenceStudio";
 import { IconBolt, IconClose, IconMonitor, IconPencil, IconSearch, IconWarn } from "./Icons";
 
 export function ConnectView() {
@@ -28,6 +29,7 @@ export function ConnectView() {
   // Modo simples por padrão: controles técnicos continuam acessíveis sob demanda.
   const [advanced, setAdvanced] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
 
   // 新建连接标签总是有的时候才显示这一页；万一没有（例如状态不一致），补一个
   useEffect(() => {
@@ -93,6 +95,7 @@ export function ConnectView() {
   return (
     <div className="newtab">
       {editorOpen && <WmkTextEditor onClose={() => setEditorOpen(false)} />}
+      {evidenceOpen && <WmkEvidenceStudio onClose={() => setEvidenceOpen(false)} />}
       <div className="nt-wrap">
         <section className="nt-card">
           <div className="nt-head">
@@ -102,6 +105,7 @@ export function ConnectView() {
             <h1>Conectar a um computador</h1>
             <p className="muted">Digite o código de 6 números informado pela pessoa que precisa de ajuda.</p>
             <button type="button" className="text-btn" onClick={() => setEditorOpen(true)}>Abrir editor de XML / JSON / Logs</button>
+            <button type="button" className="text-btn" onClick={() => setEvidenceOpen(true)}>Rever vídeo e anotações do suporte</button>
           </div>
 
           <div className="nt-field">
