@@ -6,8 +6,9 @@
 import { useSyncExternalStore } from "react";
 import en from "../locales/en.ts";
 import zh from "../locales/zh.ts";
+import pt from "../locales/pt.ts";
 
-export type Lang = "zh" | "en";
+export type Lang = "zh" | "en" | "pt";
 
 export type Params = Record<string, string | number | boolean>;
 /** 文案：字符串里的 {name} 会被参数替换；需要处理单复数等情况时写成函数 */
@@ -15,14 +16,21 @@ export type Msg = string | ((p: Params) => string);
 /** 全部词条（以 locales/zh.ts 为准） */
 export type MsgKey = keyof typeof zh;
 
-const DICT: Record<Lang, Record<MsgKey, Msg>> = { zh, en };
+const DICT: Record<Lang, Partial<Record<MsgKey, Msg>>> = { zh, en, pt };
 
 /** 与 Rust 端 i18n::Lang::from_tag 相同的规则：中文用中文，其它一律英文 */
 export function langFromTag(tag: string | undefined | null): Lang {
-  return /^zh(?:[-_.@]|$)/i.test(tag?.trim() ?? "") ? "zh" : "en";
+  if (/^zh(?:[-_.@]|$)/i.test(tag?.trim() ?? "")) return "zh";
+  if (/^pt(?:[-_.@]|$)/i.test(tag?.trim() ?? "")) return "pt";
+  return "en";
 }
 
 function initialLang(): Lang {
+  try {
+    const saved = localStorage.getItem("wmk.ui.lang");
+    if (saved === "zh" || saved === "en" || saved === "pt") return saved;
+  } catch { /* Navegador sem armazenamento. */ }
+  if (/^pt(?:[-_.@]|$)/i.test(globalThis.navigator?.language ?? "")) return "pt";
   const injected = (globalThis as { __AIRHAND_LANG__?: unknown }).__AIRHAND_LANG__;
   if (injected === "zh" || injected === "en") return injected;
   // 没有注入（例如直接用浏览器打开开发服务器）：按 WebView 的系统语言
@@ -34,7 +42,7 @@ const listeners = new Set<() => void>();
 
 function applyDocument() {
   if (typeof document === "undefined") return;
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang === "pt" ? "pt-BR" : "en";
   document.title = t("app.title");
 }
 applyDocument();
@@ -45,6 +53,7 @@ export const getLang = () => lang;
 export function setLang(next: Lang) {
   if (next === lang) return;
   lang = next;
+  try { localStorage.setItem("wmk.ui.lang", next); } catch { /* Modo privado. */ }
   applyDocument();
   for (const l of listeners) l();
 }
@@ -56,7 +65,7 @@ function subscribe(fn: () => void) {
 
 export function t(key: MsgKey, params?: Params): string {
   // 词条缺失（例如 Rust 端新增了问题类型而前端还没补）时显示 key，而不是出错
-  const m = DICT[lang][key] ?? key;
+  const m = DICT[lang][key] ?? en[key] ?? key;
   if (typeof m === "function") return m(params ?? {});
   if (!params) return m;
   return m.replace(/\{(\w+)\}/g, (all, k: string) => (k in params ? String(params[k]) : all));

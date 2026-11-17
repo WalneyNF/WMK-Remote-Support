@@ -27,6 +27,11 @@ import {
 } from "./Icons";
 import { Popover } from "./Popover";
 import { QualityPanel, fmtKbps } from "./QualityPanel";
+import { LabRecorder } from "./LabRecorder";
+import { WmkTextEditor } from "./WmkTextEditor";
+import { WmkEvidenceStudio } from "./WmkEvidenceStudio";
+import { WmkTechnicianAi } from "./WmkTechnicianAi";
+import { WmkMiniServiceDesk } from "./WmkMiniServiceDesk";
 
 /** 把会话的 canvas 挂到当前位置（同一时刻只会挂在一个地方） */
 export function CanvasHost({ s, interactive }: { s: RemoteSession; interactive: boolean }) {
@@ -178,6 +183,10 @@ export function SessionView({ s }: { s: RemoteSession }) {
   const title = useSessionTitle(s);
   const [menu, setMenu] = useState<Menu>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [deskOpen, setDeskOpen] = useState(false);
   // 对方要求配对码、或者对方的身份变了（要重新配对）时输入的配对码
   const [pairing, setPairing] = useState("");
   const needsPairing =
@@ -284,6 +293,10 @@ export function SessionView({ s }: { s: RemoteSession }) {
 
   return (
     <div className={`session-view ${immersive ? "immersive" : ""}`}>
+      {editorOpen && <WmkTextEditor onClose={() => { setEditorOpen(false); s.setInteractive(true); s.focus(); }} />}
+      {evidenceOpen && <WmkEvidenceStudio onClose={() => { setEvidenceOpen(false); s.setInteractive(true); s.focus(); }} />}
+      {aiOpen && <WmkTechnicianAi sessionLabel={title} onClose={() => { setAiOpen(false); s.focus(); }} />}
+      {deskOpen && <WmkMiniServiceDesk remoteCode={s.code ? String(s.code) : undefined} onClose={() => { setDeskOpen(false); s.focus(); }} />}
       {immersive && <div className="hot-edge" />}
       <header ref={toolbarRef} className={`toolbar ${revealed ? "revealed" : ""}`}>
         {/* 像浏览器的地址栏：连的是哪台、现在怎么样 */}
@@ -353,6 +366,11 @@ export function SessionView({ s }: { s: RemoteSession }) {
         </div>
 
         <div className="tb-right">
+          {api.kind === "web" && <LabRecorder session={s} />}
+          <button className={`tb-btn ${aiOpen ? "on" : ""}`} type="button" onClick={() => setAiOpen(v => !v)} title="Chat privado do técnico com agentes e IA local; não aparece no computador do cliente">IA do técnico</button>
+          <button className="tb-btn" type="button" onClick={() => setDeskOpen(true)} title="Cadastro local de clientes, computadores e histórico de chamados">Chamados</button>
+          <button className="tb-btn" type="button" onClick={() => { s.setInteractive(false); setEditorOpen(true); }} title="Abrir arquivo local XML, JSON, TXT ou LOG para inspeção e formatação">Editor XML/JSON</button>
+          <button className="tb-btn" type="button" onClick={() => { s.setInteractive(false); setEvidenceOpen(true); }} title="Rever gravação local e criar notas para programação">Evidências / Post-its</button>
           <button className="tb-btn" type="button" disabled={!live || savingScreenshot} onClick={() => void saveScreenshot()} title="Capturar a tela remota em PNG para um relatório de suporte">
             <span>{savingScreenshot ? "Salvando..." : "Capturar tela"}</span>
           </button>
@@ -586,8 +604,8 @@ export function SessionView({ s }: { s: RemoteSession }) {
         </div>
       </header>
 
-      <div className="stage">
-        <CanvasHost s={s} interactive={s.state === "live"} />
+      <div className={`stage ${aiOpen ? "wmk-techai-open" : ""}`}>
+        <CanvasHost s={s} interactive={s.state === "live" && !editorOpen && !evidenceOpen} />
 
         {s.state !== "live" && (
           <div className="stage-overlay">

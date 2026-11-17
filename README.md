@@ -11,6 +11,10 @@
 
 📊 **[Pesquisa comparativa AnyDesk e WMK](manuais/pesquisa-anydesk.html)** — estudo das capturas, perfis de permissão, identificadores e instalação sem configuração.
 
+> 🧪 **Nova versão de laboratório (branch `wmk/v0.3-preview-lab`):** [manual de teste em um só PC](manuais/teste-mesma-maquina.md). O GitHub Actions tenta gerar o instalador Windows e um kit local sem Docker, com servidor relay e console web. A prévia inclui **gravação WebM experimental de até 30 segundos**, apenas no console web em localhost. Não é gravação auditável com aceite no host, e a **transferência de arquivos ainda não está implementada**. Este kit é de teste, não de produção.
+
+**Idioma brasileiro na prévia:** a central React agora oferece **PT-BR** no menu Configurações > Idioma, com tradução das telas principais (conexão, computadores, sessão, qualidade e erros comuns). A preferência fica salva no navegador/WebView. **A tradução ainda é parcial:** algumas mensagens avançadas podem aparecer em inglês; menus nativos Rust/serviço Windows e Android exigem uma segunda etapa de localização.
+
 ## Sobre o projeto
 
 O **WMK Remote Support** é uma iniciativa de transformar um software de desktop remoto em uma plataforma de atendimento técnico: conexões seguras com autorização, suporte a clientes, diagnóstico, histórico de chamados e documentação acessível em português brasileiro.
@@ -84,6 +88,12 @@ Na aba **Actions**, selecione **Windows — compilação WMK** e execute **Run w
 
 Artefatos de Actions **não são automaticamente Releases públicas**. Primeiro validaremos a compilação e as conexões.
 
+**[Pesquisa visual: transferência de arquivos no AnyDesk](manuais/transferencia-referencia-anydesk.html)** — requisitos dos dois painéis, upload/download, Ctrl+C/Ctrl+V, segurança e testes. **Ainda não implementado no WMK.**
+
+**Suporte a sistemas fiscais:** [guia HTML de atendimento a NF-e, XML e backups](manuais/fluxo-suporte-fiscal.html). A branch preview contém uma **base de protocolo binário de transferência** com validações e testes Rust; **ela ainda não transfere arquivos entre computadores**. Para ativar o envio real, faltam integração do host, controlador, autorização de pastas e gerenciador de arquivos na interface.\n\n**Central de Evidências (prévia):** abra MP4/WebM locais, pause no ponto do erro, salve um quadro PNG e crie post-its com problema encontrado, correção proposta e timestamp. As notas podem ser exportadas/importadas em JSON para a equipe. Esse recurso **não grava sessões automaticamente** e requer validação no instalador Windows.
+
+**Arquivos fiscais e outros formatos:** o objetivo do gerenciador remoto é receber/enviar arquivos de qualquer extensão (inclusive TXT de cancelamento, XML de NF-e/eventos, DANFE PDF, ZIP, EXE e bancos), em blocos para tamanhos grandes, com autorização e hash SHA-256. A transferência entre computadores **ainda não está funcional**; não confundir com o editor local de XML/JSON e a Central de Evidências.
+
 ## Transferência de arquivos e tempo de sessão
 
 **Transferência de arquivos (em desenvolvimento):** pretendemos permitir enviar arquivos do computador do técnico para o cliente e baixar arquivos autorizados do cliente. Isso ainda **não está disponível no protocolo atual**. Não confundir com a área de transferência de texto existente.
@@ -110,6 +120,10 @@ A transferência de arquivos **ainda não existe** e não deve ser confundida co
 
 📹 **[Gravação e auditoria de sessões](manuais/gravacao-auditoria.html)** — estudo técnico sobre vídeo, relatórios, integridade, consentimento e política empresarial. **Funcionalidade planejada: ainda não disponível no aplicativo.**
 
+**WMK Support Intelligence (prévia):** a Central de Evidências contém um construtor local de consultas para IA sobre erros de NF-e/SEFAZ, XML/JSON, logs e bugs. É possível incluir post-its mediante seleção e copiar a consulta para um assistente externo. **Ainda não chama Ollama, Groq, OpenAI nem Gemini:** integrar provedores de forma segura, gerenciar credenciais e autorização de dados são etapas futuras.
+
+**Referência de interface:** [WMK IA Assistente (VS Code)](https://github.com/WalneyNF/WMK-IA-ASSISTENTE) — extensão v0.6.0 documenta chat lateral, agentes, skills e provedores. O repositório da extensão contém documentação e workflows, mas ainda não os arquivos-fonte para reutilização direta. No Remote Support, um painel próprio **exclusivo do técnico** foi implementado na branch de testes, com agentes personalizáveis e integração experimental ao Ollama em localhost. Groq, OpenAI e Gemini estão no catálogo, ainda sem credenciais nem chamadas; precisam de backend seguro. A sessão remota não envia sua tela nem os dados do cliente para o chat automaticamente.
+
 ## Evolução WMK
 
 Consulte o [roadmap interativo em HTML](manuais/roadmap.html), o [estado de evolução JSON](manuais/evolucao.json) e o [ROADMAP.md](ROADMAP.md) para as prioridades e os critérios de validação.
@@ -128,3 +142,9 @@ O acesso remoto exige autorização, identificação do técnico, possibilidade 
 
 ---
 *Este repositório é um projeto independente e não é afiliado a AnyDesk ou TeamViewer.*
+
+## WMK Mini Service Desk — desenvolvedor independente
+
+A branch de testes possui um **MVP local** de cadastro de clientes, computadores e chamados, com notas internas, linha do tempo, prioridades, situação, pesquisa e backup/importação JSON. Acesse **Clientes e chamados — Mini Service Desk** na tela de conexão ou **Chamados** durante a sessão.
+
+**Limite importante:** nesta prévia, os registros ficam apenas em `localStorage` no computador/navegador do técnico. Não é adequado para dados sigilosos de produção, não possui autenticação de equipe, backups automáticos, banco compartilhado, vinculação automática da sessão nem conexão operacional com GLPI. O projeto futuro deverá usar SQLite no backend Rust e integração opcional por API com seu fork do GLPI. Os arquivos XML e dados fiscais completos não devem ser registrados nesse protótipo.

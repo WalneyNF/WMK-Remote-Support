@@ -66,6 +66,7 @@
 
 pub mod cbor;
 pub mod framing;
+pub mod file_transfer;
 
 /// 消息的编码（带编号的 CBOR，见 [`framing`]）
 pub use minicbor;

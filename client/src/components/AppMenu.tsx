@@ -199,6 +199,7 @@ function Keys({ keys, children }: { keys: string[]; children: ReactNode }) {
 const LANGS: { id: Lang; label: string }[] = [
   { id: "zh", label: "中文" },
   { id: "en", label: "EN" },
+  { id: "pt", label: "PT-BR" },
 ];
 
 export function LangSwitch() {
@@ -206,7 +207,8 @@ export function LangSwitch() {
   const choose = (l: Lang) => {
     setLang(l);
     // 同步给 Rust 端：托盘菜单、窗口标题、之后产生的提示与错误
-    void api.setLanguage(l);
+    // O backend Rust ainda não conhece pt-BR; mantém menus nativos em inglês nesta prévia.
+    void api.setLanguage(l === "pt" ? "en" : l);
   };
   return (
     <div className="segmented lang-switch" role="group" aria-label="Language / 语言" title="Language / 语言">

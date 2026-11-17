@@ -2094,3 +2094,125 @@ input[type="range"]::-webkit-slider-thumb {
   background: var(--glass-2);
   box-shadow: none;
 }
+
+/* WMK Editor de Suporte: overlay isolado para não confundir atalhos do editor
+   com o controle de teclado do computador remoto. */
+.wmk-edit-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(5,10,23,.94);display:flex;align-items:center;justify-content:center;padding:15px}
+.wmk-edit-modal{width:min(1100px,100%);height:min(850px,96vh);display:flex;flex-direction:column;gap:9px;color:#edf5ff;background:#111b32;border:1px solid #465a78;border-radius:14px;box-shadow:0 18px 80px #000b;padding:17px;min-height:0}
+.wmk-edit-bar,.wmk-edit-toolbar,.wmk-edit-meta,.wmk-edit-find{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wmk-edit-bar{justify-content:space-between}.wmk-edit-bar>div{display:flex;flex-direction:column}
+.wmk-edit-muted,.wmk-edit-meta,.wmk-edit-status{color:#b8c8e1;font-size:12px}
+.wmk-edit-toolbar{border-top:1px solid #2c3d57;padding-top:10px}
+.wmk-edit-modal button{background:#243c5d;color:white;border:1px solid #53718e;border-radius:7px;padding:7px 11px;cursor:pointer}
+.wmk-edit-modal button:disabled{opacity:.45;cursor:not-allowed}
+.wmk-edit-modal button:hover:not(:disabled){background:#31577f}
+.wmk-edit-modal input[type=text],.wmk-edit-find input{background:#0a1528;color:white;border:1px solid #53647e;border-radius:6px;padding:8px;flex:1;min-width:145px}
+.wmk-edit-toolbar label{display:flex;gap:5px;align-items:center;font-size:12px}
+.wmk-edit-meta{justify-content:space-between}
+.wmk-edit-meta strong{color:#90e8f8}
+.wmk-edit-textarea{flex:1;min-height:150px;resize:none;background:#070e1c;color:#e4f4ff;font:13px/1.55 Consolas,"Cascadia Code",monospace;border:1px solid #3a5276;border-radius:8px;padding:14px;tab-size:2}
+.wmk-edit-textarea:focus{outline:2px solid #50c8ff}
+.wmk-edit-status{min-height:20px;overflow-wrap:anywhere}
+.wmk-edit-bottom{font-size:11px}
+@media(max-width:630px){.wmk-edit-modal{padding:9px}.wmk-edit-toolbar{gap:5px}.wmk-edit-modal button{padding:6px}.wmk-edit-overlay{padding:5px}}
+
+/* WMK Evidence Studio — reprodução local e notas de atendimento */
+.wmk-ev-overlay{position:fixed;inset:0;z-index:2147483001;background:rgba(5,10,20,.96);padding:12px;display:flex;justify-content:center;align-items:center}
+.wmk-ev-modal{width:min(1250px,100%);max-height:97vh;background:#101a31;color:#eaf3ff;border:1px solid #415576;border-radius:14px;padding:15px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.wmk-ev-head,.wmk-ev-tools,.wmk-ev-seek,.wmk-ev-note-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.wmk-ev-head{justify-content:space-between}
+.wmk-ev-head>div{display:flex;flex-direction:column}.wmk-ev-head span,.wmk-ev-time,.wmk-ev-message,.wmk-ev-footer{color:#afc4db;font-size:12px}
+.wmk-ev-modal button{border:1px solid #56759b;border-radius:8px;background:#244266;color:#eef9ff;padding:7px 11px;cursor:pointer}
+.wmk-ev-modal button:disabled{opacity:.4;cursor:not-allowed}
+.wmk-ev-modal button:not(:disabled):hover{background:#345a85}
+.wmk-ev-columns{min-height:0;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,1fr);gap:14px;overflow:auto}
+.wmk-ev-player,.wmk-ev-notes{min-width:0;display:flex;flex-direction:column;gap:9px}
+.wmk-ev-player video{display:block;width:100%;max-height:54vh;background:#000;border-radius:10px}
+.wmk-ev-placeholder{height:220px;display:grid;place-items:center;text-align:center;padding:25px;background:#080f1d;border-radius:10px;color:#afc4db}
+.wmk-ev-time{word-break:break-word}
+.wmk-ev-seek label{font-size:12px}.wmk-ev-modal input,.wmk-ev-modal textarea,.wmk-ev-modal select{color:#eef7ff;background:#091427;border:1px solid #4c6486;border-radius:6px;padding:7px;min-width:0}
+.wmk-ev-notes h3{margin:0;font-size:15px}.wmk-ev-notes>label{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.wmk-ev-notes textarea{resize:vertical}
+.wmk-ev-search input{width:100%}
+.wmk-ev-list{overflow:auto;min-height:70px;max-height:28vh;display:flex;flex-direction:column;gap:7px}
+.wmk-ev-note{background:#202742;border-left:3px solid #b98df5;padding:10px;border-radius:8px}
+.wmk-ev-note>div:first-child{display:flex;align-items:center;gap:8px}
+.wmk-ev-note strong,.wmk-ev-note p{overflow-wrap:anywhere}
+.wmk-ev-note p{margin:5px 0;color:#dbe6f5;font-size:12px}
+.wmk-ev-note-actions{justify-content:space-between;font-size:11px}
+.wmk-ev-footer{border-top:1px solid #304560;padding-top:8px}
+@media(max-width:760px){.wmk-ev-columns{grid-template-columns:1fr}.wmk-ev-overlay{padding:3px}.wmk-ev-modal{padding:8px}.wmk-ev-player video{max-height:30vh}.wmk-ev-list{max-height:200px}}
+
+/* WMK Support Intelligence: preparação de consultas sem envio automático */
+.wmk-ai-panel{background:#10192c;border:1px solid #415b81;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.wmk-ai-panel h3{color:#9ce6ff;margin:0;font-size:14px}
+.wmk-ai-panel p{font-size:11px;color:#c3cee0;margin:0}
+.wmk-ai-panel label{display:flex;flex-direction:column;gap:4px;color:#dcecff;font-size:12px}
+.wmk-ai-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:8px}
+.wmk-ai-checkbox{flex-direction:row!important;align-items:center}
+.wmk-ai-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wmk-ai-actions span{font-size:11px;color:#a9d4fd}
+.wmk-ai-panel textarea{min-height:55px}
+@media(max-width:620px){.wmk-ai-grid{grid-template-columns:1fr}}
+
+/* WMK IA Assistente: painel somente no console do técnico.
+   O host vê somente a captura nativa de sua própria máquina. */
+.stage.wmk-techai-open .canvas-host{right:390px}
+.wmk-techai{position:absolute;z-index:4;top:0;bottom:0;right:0;width:390px;max-width:100%;display:flex;flex-direction:column;min-height:0;background:#101a2e;color:#eef7ff;border-left:1px solid #445e7f;box-shadow:-7px 0 25px #0006;font:13px/1.5 system-ui,sans-serif}
+.wmk-techai *{box-sizing:border-box}
+.wmk-techai button{padding:6px 9px;background:#273f60;color:#f2f9ff;border:1px solid #55749b;border-radius:7px;cursor:pointer}
+.wmk-techai button:disabled{opacity:.5;cursor:not-allowed}
+.wmk-techai button:hover:not(:disabled){background:#355980}
+.wmk-techai input,.wmk-techai textarea,.wmk-techai select{font:inherit;color:#eaf5ff;background:#0a1529;border:1px solid #526b8f;border-radius:6px;padding:7px;min-width:0}
+.wmk-techai-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px;border-bottom:1px solid #344967}
+.wmk-techai-head>div{display:flex;flex-direction:column;gap:1px}.wmk-techai-head small{color:#b6c9e3;font-size:11px}
+.wmk-techai-settingsbar{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px;border-bottom:1px solid #334966}
+.wmk-techai-settingsbar label,.wmk-techai-config label{display:flex;flex-direction:column;gap:3px;font-size:11px;min-width:0}
+.wmk-techai-settingsbar select{width:100%;max-width:100%}
+.wmk-techai-buttons{display:flex;flex-wrap:wrap;gap:6px;grid-column:1/-1}
+.wmk-techai-config{padding:10px;display:flex;flex-direction:column;gap:7px;overflow:auto;max-height:42%;background:#19263e;border-bottom:1px solid #354866}
+.wmk-techai-config p{font-size:11px;color:#b3c9e0;margin:0}
+.wmk-techai-conversation{flex:1;overflow:auto;min-height:70px;display:flex;flex-direction:column;gap:10px;padding:11px}
+.wmk-techai-conversation article{padding:10px;border-radius:10px;background:#1c2b45;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text}
+.wmk-techai-conversation article.wmk-techai-question{background:#28405b;margin-left:20px}
+.wmk-techai-conversation article.wmk-techai-answer{margin-right:15px}
+.wmk-techai-conversation article p{margin:4px 0 8px;color:#e1eeff;user-select:text}
+.wmk-techai-conversation article button{font-size:10px}
+.wmk-techai-empty{color:#c7d9ef}.wmk-techai-empty p{font-size:12px}
+.wmk-techai-compose{display:flex;flex-direction:column;gap:7px;border-top:1px solid #334966;padding:10px}
+.wmk-techai-compose textarea{resize:vertical;min-height:55px;max-height:140px}
+.wmk-techai-compose small{color:#afc8e4;font-size:10px;overflow-wrap:anywhere}
+@media(max-width:850px){.stage.wmk-techai-open .canvas-host{right:0}.wmk-techai{width:min(390px,93vw)}}
+
+/* WMK Mini Service Desk — prévia individual, sem integração GLPI */
+.wmk-sd-overlay{position:fixed;inset:0;z-index:2147483002;background:rgba(3,9,19,.96);padding:12px;display:flex;align-items:center;justify-content:center}
+.wmk-sd-modal{background:#101a30;color:#eaf5ff;border:1px solid #405b80;border-radius:14px;width:min(1350px,100%);height:min(860px,97vh);display:flex;flex-direction:column;overflow:hidden;font:13px/1.5 system-ui,sans-serif}
+.wmk-sd-modal *{box-sizing:border-box}
+.wmk-sd-modal button,.wmk-sd-import{border:1px solid #527094;border-radius:7px;background:#254263;color:#eef8ff;padding:7px 10px;cursor:pointer;text-align:left}
+.wmk-sd-modal button:hover:not(:disabled),.wmk-sd-import:hover{background:#33597f}
+.wmk-sd-modal button:disabled{opacity:.45;cursor:not-allowed}
+.wmk-sd-modal input,.wmk-sd-modal select,.wmk-sd-modal textarea{background:#0a1528;border:1px solid #486687;border-radius:7px;color:#eaf4ff;padding:8px;font:inherit;width:100%;min-width:0}
+.wmk-sd-modal label{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.wmk-sd-head,.wmk-sd-toolbar,.wmk-sd-footer{padding:12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #344767;flex-wrap:wrap}
+.wmk-sd-head{justify-content:space-between}.wmk-sd-head>div{display:flex;flex-direction:column}.wmk-sd-head strong{font-size:18px}.wmk-sd-head small{color:#b6c7e0;font-size:12px}
+.wmk-sd-toolbar .on{background:#315c83}
+.wmk-sd-body{display:grid;grid-template-columns:240px minmax(0,1fr);flex:1;min-height:0;overflow:hidden}
+.wmk-sd-sidebar{background:#131f38;padding:14px;display:flex;flex-direction:column;gap:14px;border-right:1px solid #344767;overflow:auto}
+.wmk-sd-sidebar p,.wmk-sd-customer span{font-size:11px;color:#afc3da}
+.wmk-sd-customer,.wmk-sd-stats{display:flex;flex-direction:column;gap:5px;padding:10px;border:1px solid #3c5376;border-radius:9px}
+.wmk-sd-main{overflow:auto;padding:14px;min-height:0}
+.wmk-sd-main h3{margin:3px 0 8px;color:#a5eaff;font-size:15px}
+.wmk-sd-form{display:flex;flex-direction:column;gap:10px;max-width:780px}
+.wmk-sd-row{display:flex;justify-content:space-between;border:1px solid #385375;padding:9px;border-radius:7px}
+.wmk-sd-ticket-area{display:grid;grid-template-columns:minmax(230px,.9fr) minmax(260px,1.3fr);gap:15px;min-height:0}
+.wmk-sd-tickets,.wmk-sd-detail{display:flex;flex-direction:column;gap:9px;min-width:0}
+.wmk-sd-tickets>button{display:flex;flex-direction:column;gap:2px;overflow-wrap:anywhere}
+.wmk-sd-tickets>button.selected{border-color:#79d8ff;background:#32587d}
+.wmk-sd-tickets small{color:#bed0e5}
+.wmk-sd-detail p{color:#cad6e9;overflow-wrap:anywhere;margin:4px 0}
+.wmk-sd-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wmk-sd-events{max-height:230px;overflow:auto;display:flex;flex-direction:column;gap:7px;border:1px solid #385171;border-radius:8px;padding:7px}
+.wmk-sd-events article{background:#1d2b44;padding:8px;border-radius:6px}.wmk-sd-events small{color:#b3c9df}
+.wmk-sd-footer{border:0;border-top:1px solid #344767;display:flex;justify-content:space-between}
+.wmk-sd-footer span,.wmk-sd-footer small{color:#b5c8e0;font-size:11px}
+@media(max-width:810px){.wmk-sd-body{grid-template-columns:1fr;overflow:auto}.wmk-sd-sidebar{border:0}.wmk-sd-ticket-area{grid-template-columns:1fr}.wmk-sd-fields{grid-template-columns:1fr}.wmk-sd-overlay{padding:4px}}

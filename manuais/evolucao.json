@@ -62,8 +62,20 @@
         "Tentativa de path traversal",
         "Interrupcao e retomada autorizada",
         "Arquivos grandes e nomes Unicode",
-        "Executaveis nao iniciados automaticamente"
-      ]
+        "Executaveis nao iniciados automaticamente",
+        "Gerenciador com dois paineis local/remoto",
+        "Upload e download com aprovacao do cliente",
+        "Fila de progresso e cancelamento",
+        "Sem perder responsividade de video e comandos",
+        "Ctrl+C e Ctrl+V entre os paineis",
+        "Arrastar/soltar com confirmacao",
+        "Sem sobrescrita ou execucao automatica",
+        "Copiar XML de evento de cancelamento e PDF DANFE preservando bytes",
+        "Conferir XML de protocolo/evento sem alterar documento de origem",
+        "Transferir varios arquivos e diretorios em lote",
+        "Sem tamanho maximo artificial, respeitando espaco e filesystem"
+      ],
+      "notes": "Qualquer arquivo, incluindo TXT/XML de cancelamento NF-e e DANFE PDF, sem limite artificial de extensao; fragmentar dados, cotas configuraveis, retomada autorizada e hash. Ainda nao funcional remotamente."
     },
     {
       "id": "quick-support",
@@ -84,11 +96,15 @@
       "status": "parcial",
       "priority": "P1",
       "tests": [
-        "React",
-        "Rust/bandeja",
-        "Android",
-        "Instalador",
-        "Mensagens de erro"
+        "Traducao das telas principais em PT-BR",
+        "Persistencia de idioma via localStorage",
+        "Backend Rust e tray ainda pendentes",
+        "Android e instalador ainda pendentes"
+      ],
+      "paths": [
+        "client/src/locales/pt.ts",
+        "client/src/lib/i18n.ts",
+        "client/src/components/AppMenu.tsx"
       ]
     },
     {
@@ -214,8 +230,16 @@
         "Controle de uso de CPU/RAM e crescimento do arquivo",
         "Queda de energia deixa fragmentos recuperaveis",
         "Cliente pode interromper o compartilhamento imediatamente",
-        "Nao gravar sem permissao ou no modo de tela privada"
-      ]
+        "Nao gravar sem permissao ou no modo de tela privada",
+        "Remux sem reencodificacao para codecs/contêineres compativeis",
+        "Segmentos recuperaveis apos falha/quebra de conexao",
+        "Player local e exportacao MP4 ou conversao offline",
+        "Teste CPU e disco durante sessao longa sem perda de controle",
+        "Marcadores de erro, captura PNG e relatorio por sessao",
+        "Alternancia de monitor/resolucao e chaveamento de codec sem corromper arquivo",
+        "Sem audio por padrao; audio requer permissao separada"
+      ],
+      "notes": "Preferir gravacao por remultiplexacao dos pacotes de video recebidos (H264/HEVC/AV1 conforme compatibilidade) sem reencodar. Validar timestamps, keyframes, troca de codec/resolucao, reconexao, multimonitor e audio opt-in. Usar segmentos curtos com escrita incremental, indice e hash; exportar MP4 quando possivel e converter quando necessario. Exigir autorizacao informada no host e indicador persistente de gravacao."
     },
     {
       "id": "audit-trail",
@@ -276,7 +300,211 @@
         "Manter mouse e video responsivos",
         "Bloquear travessia de diretorios",
         "Hash do arquivo final e consentimento visivel"
+      ],
+      "paths": [
+        "crates/airhand-proto/src/session.rs",
+        "client/src-tauri/",
+        "client/src/components/"
       ]
+    },
+    {
+      "id": "local-laboratory",
+      "area": "Testes",
+      "title": "Laboratório Windows na mesma máquina sem Docker",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "tools/teste-local/WMK-Iniciar-Teste.cmd",
+        "tools/teste-local/iniciar-laboratorio.ps1",
+        ".github/workflows/windows-build.yml"
+      ],
+      "tests": [
+        "Build servidor relay Windows",
+        "Build console web Windows",
+        "Start e stop só em loopback",
+        "Console acessa o host instalado",
+        "Não expõe portas à rede"
+      ]
+    },
+    {
+      "id": "lab-recording",
+      "area": "Testes",
+      "title": "Gravação WebM experimental com limite de 30 segundos",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "client/src/components/LabRecorder.tsx",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Só exibe no console localhost",
+        "Pede confirmação do operador",
+        "Exporta arquivo WebM reproduzível",
+        "Parar e terminar quando desconectar",
+        "Não confundir com gravação auditável"
+      ]
+    },
+    {
+      "id": "file-protocol-foundation",
+      "area": "Transferencia",
+      "title": "Contrato binario de transferencia com validacao e autorizacao por escopo",
+      "status": "implementado_nao_validado",
+      "priority": "P0",
+      "paths": [
+        "crates/airhand-proto/src/file_transfer.rs",
+        "crates/airhand-proto/src/lib.rs"
+      ],
+      "tests": [
+        "Rust unit tests do protocolo",
+        "Rejeita caminhos traversal, nomes reservados e blocos excessivos",
+        "Exige permissao do host por direcao",
+        "Nao permite chunks antes de aprovacao",
+        "Bloqueia offsets fora de ordem e transferencia incompleta",
+        "Revogacao interrompe transferencias"
+      ],
+      "notes": "Fundacao de protocolo apenas: ainda nao integrada ao transporte da sessao, disco remoto ou UI; NAO funciona transferir arquivos."
+    },
+    {
+      "id": "evidence-player",
+      "area": "Auditoria",
+      "title": "Reproduzir videos locais MP4/WebM e extrair quadros em PNG",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkEvidenceStudio.tsx",
+        "client/src/components/SessionView.tsx",
+        "client/src/components/ConnectView.tsx"
+      ],
+      "tests": [
+        "Abrir videos locais compativeis com WebView2",
+        "Retroceder e avancar cinco segundos",
+        "Pausar e salvar PNG na resolucao do video",
+        "Tratar codecs nao suportados",
+        "Nao enviar videos a terceiros"
+      ],
+      "notes": "Player local de videos existentes, nao grava automaticamente a sessao."
+    },
+    {
+      "id": "evidence-postits",
+      "area": "Auditoria",
+      "title": "Post-its com problema observado, plano de correcao, estado e segundo do video",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkEvidenceStudio.tsx"
+      ],
+      "tests": [
+        "Criar anotacao com timestamp da reproducao",
+        "Clicar em anotacao e localizar o instante",
+        "Buscar, excluir, importar e exportar JSON",
+        "Nao guardar XMLs ou dados de clientes involuntariamente"
+      ],
+      "notes": "JSON exportado para equipe; integracao compartilhada multiusuario ainda planejada."
+    },
+    {
+      "id": "fiscal-cancel-evidence",
+      "area": "Transferencia",
+      "title": "Receber TXT de cancelamento, XML de NFe/eventos, DANFE PDF e anexos arbitrarios",
+      "status": "planejado",
+      "priority": "P0",
+      "paths": [
+        "crates/airhand-proto/src/file_transfer.rs",
+        "client/src-tauri/",
+        "client/src/components/"
+      ],
+      "tests": [
+        "Sem restricao por extensao de arquivo",
+        "Transferir TXT XML PDF ZIP EXE DBF FPT CDX nos dois sentidos",
+        "Varios arquivos e pastas em uma operacao",
+        "Arquivos grandes em blocos sem carregamento integral em memoria",
+        "Barra, velocidade, cancelamento e retomada autenticada",
+        "Comparar SHA-256 do arquivo original e recebido",
+        "Tratar falta de espaco e caminhos invalidos",
+        "Consentimento e diretorio autorizado no host",
+        "Nao modificar XML fiscal ou PDF durante copia"
+      ],
+      "notes": "Sem limite arbitrario de extensoes/tamanho no aplicativo, mas sujeito a limites reais de disco, protocolo, rede e filesystem. Ainda nao integrado ao transporte remoto."
+    },
+    {
+      "id": "ai-prompt-builder",
+      "area": "Inteligencia Artificial",
+      "title": "Preparar consulta de diagnostico com notas, erros fiscais e logs",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkSupportAiPanel.tsx",
+        "client/src/components/WmkEvidenceStudio.tsx"
+      ],
+      "tests": [
+        "Gerar prompt de NF-e, logs, XML/JSON e bug de software",
+        "Opt-in para inserir os post-its na consulta",
+        "Redacao parcial de CNPJ/CPF/chave NFe/segredos",
+        "Copiar consulta sem chamar APIs externas",
+        "Verificar que nunca envia automaticamente arquivos ou capturas",
+        "Validar compilacao TS e testes na interface"
+      ],
+      "notes": "Primeira etapa, sem integração com API de IA. Provedores Ollama/Groq/OpenAI/Gemini, autenticação, custos e proteção de privacidade ainda pendentes."
+    },
+    {
+      "id": "ai-provider-engine",
+      "area": "Inteligencia Artificial",
+      "title": "Integracao opcional de provedores Ollama, Groq, OpenAI e Gemini",
+      "status": "planejado",
+      "priority": "P2",
+      "tests": [
+        "Credenciais guardadas somente em backend local seguro",
+        "Selecao de modelo e limites de custo/tokens",
+        "Consentimento para cada arquivo/print enviado",
+        "Nenhum dado enviado por padrao",
+        "Modo sem IA e IA local",
+        "Timeout, cancelamento e log de proveniencia"
+      ]
+    },
+    {
+      "id": "technician-ai-private-chat",
+      "area": "Inteligencia Artificial",
+      "title": "Chat privado do técnico durante acesso remoto com agentes cadastráveis",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkTechnicianAi.tsx",
+        "client/src/components/SessionView.tsx",
+        "client/src/components/ConnectView.tsx",
+        "client/src/styles.css"
+      ],
+      "tests": [
+        "Chat aparece somente no console tecnico e nao e enviado no protocolo de video remoto",
+        "Agentes editaveis: ACBr NFe NFCe, Windows e Desenvolvimento",
+        "Cadastro local de provedores e modelos sem guardar chaves na interface",
+        "Envio e resposta via Ollama local com modelo instalado",
+        "Acompanhar tela e usar mouse/teclado remoto com painel aberto",
+        "Mensagens privadas nao incluem tela remota nem clipboard automaticamente",
+        "Exportar historico do chat JSON",
+        "Typecheck e validacao em Windows com Ollama"
+      ],
+      "notes": "Prévia: apenas Ollama 127.0.0.1:11434 executa chamadas. Conectores Groq/OpenAI/Gemini cadastráveis mas desativados até existir backend seguro. Diferente do WMK IA Assistente do VS Code; a fonte da extensão ainda não está publicada no repo."
+    },
+    {
+      "id": "mini-service-desk",
+      "area": "Gestão de atendimento",
+      "title": "Cadastro de clientes, PCs e chamados para pequeno desenvolvedor",
+      "status": "implementado_nao_validado",
+      "priority": "P1",
+      "paths": [
+        "client/src/components/WmkMiniServiceDesk.tsx",
+        "client/src/components/ConnectView.tsx",
+        "client/src/components/SessionView.tsx"
+      ],
+      "tests": [
+        "Criar cliente e computador",
+        "Abrir chamado com empresa, categoria e descrição",
+        "Mudar prioridade, status, computador e registrar notas",
+        "Consultar linha do tempo e solução do atendimento",
+        "Pesquisar chamados anteriores",
+        "Exportar e importar backup JSON sem dados sigilosos",
+        "Verificar compilação TypeScript e execução Windows"
+      ],
+      "notes": "MVP de uso individual com localStorage; não é sistema multiusuário, não autentica, não sincroniza ou conecta ao GLPI. Para produção migrar SQLite com criptografia/controle de acesso, backups e trilha de auditoria."
     }
   ]
 }
