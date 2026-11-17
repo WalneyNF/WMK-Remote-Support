@@ -2142,3 +2142,15 @@ input[type="range"]::-webkit-slider-thumb {
 .wmk-ev-note-actions{justify-content:space-between;font-size:11px}
 .wmk-ev-footer{border-top:1px solid #304560;padding-top:8px}
 @media(max-width:760px){.wmk-ev-columns{grid-template-columns:1fr}.wmk-ev-overlay{padding:3px}.wmk-ev-modal{padding:8px}.wmk-ev-player video{max-height:30vh}.wmk-ev-list{max-height:200px}}
+
+/* WMK Support Intelligence: preparação de consultas sem envio automático */
+.wmk-ai-panel{background:#10192c;border:1px solid #415b81;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.wmk-ai-panel h3{color:#9ce6ff;margin:0;font-size:14px}
+.wmk-ai-panel p{font-size:11px;color:#c3cee0;margin:0}
+.wmk-ai-panel label{display:flex;flex-direction:column;gap:4px;color:#dcecff;font-size:12px}
+.wmk-ai-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:8px}
+.wmk-ai-checkbox{flex-direction:row!important;align-items:center}
+.wmk-ai-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wmk-ai-actions span{font-size:11px;color:#a9d4fd}
+.wmk-ai-panel textarea{min-height:55px}
+@media(max-width:620px){.wmk-ai-grid{grid-template-columns:1fr}}
