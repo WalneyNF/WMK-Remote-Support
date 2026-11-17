@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { WmkSupportAiPanel } from "./WmkSupportAiPanel";
 
 /**
  * Biblioteca LOCAL de revisão de vídeos e anotações de suporte.
@@ -225,6 +226,7 @@ export function WmkEvidenceStudio({ onClose }: { onClose: () => void }) {
             <option value="corrigido">Corrigido</option>
           </select></label>
           <button onClick={addNote}>Salvar post-it no instante {timestamp(time)}</button>
+          <WmkSupportAiPanel notes={notes} />
           <div className="wmk-ev-search"><input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Buscar anotações..." /></div>
           <div className="wmk-ev-list">
