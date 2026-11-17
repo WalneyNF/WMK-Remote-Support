@@ -7,6 +7,8 @@
 >
 > **Atenção:** a arte de apresentação aprovada para o projeto é a logo futurista WMK. O arquivo vetorial desta etapa é um ícone simplificado inspirado na mesma identidade; os ícones binários dos instaladores ainda precisam ser gerados e substituídos.
 
+📘 **[Manual HTML: o que já existe no WMK Remote Support](manuais/o-que-existe.html)** — funcionalidades, arquitetura, plataformas, limitações, testes e créditos.
+
 ## Sobre o projeto
 
 O **WMK Remote Support** é uma iniciativa de transformar um software de desktop remoto em uma plataforma de atendimento técnico: conexões seguras com autorização, suporte a clientes, diagnóstico, histórico de chamados e documentação acessível em português brasileiro.
