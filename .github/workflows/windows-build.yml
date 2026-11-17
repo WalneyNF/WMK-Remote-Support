@@ -8,6 +8,7 @@ on:
       - "client/**"
       - "crates/**"
       - ".github/workflows/windows-build.yml"
+      - "tools/teste-local/**"
   pull_request:
     paths:
       - "client/**"
@@ -54,5 +55,56 @@ jobs:
         with:
           name: WMK-Remote-Support-Windows-teste
           path: client/src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+          retention-days: 14
+
+  laboratorio-local:
+    runs-on: windows-latest
+    timeout-minutes: 150
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            web -> target
+      - name: Instalar CMake
+        uses: lukka/get-cmake@latest
+      - name: Compilar relay nativo Windows
+        run: cargo build --locked --release -p airhand-server
+      - name: Compilar console web nativo Windows
+        run: cargo build --locked --release --manifest-path web/Cargo.toml
+      - name: Compilar frontend web
+        working-directory: client
+        run: |
+          npm ci
+          npm run build
+      - name: Montar kit de teste de uma maquina
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path kit/bin,kit/www | Out-Null
+          Copy-Item target/release/airhand-server.exe kit/bin/wmk-relay.exe
+          Copy-Item web/target/release/airhand-web.exe kit/bin/wmk-console-web.exe
+          Copy-Item client/dist/* kit/www/ -Recurse -Force
+          Copy-Item tools/teste-local/iniciar-laboratorio.ps1 kit/WMK-Teste-Local.ps1
+          Copy-Item manuais/teste-mesma-maquina.md kit/LEIA-ME.txt
+          if (-not (Test-Path kit/www/index.html)) { throw 'Nao foi encontrado kit/www/index.html' }
+          if (-not (Test-Path kit/bin/wmk-relay.exe)) { throw 'Nao foi encontrado o relay Windows' }
+          if (-not (Test-Path kit/bin/wmk-console-web.exe)) { throw 'Nao foi encontrado console Windows' }
+      - name: Publicar laboratorio Windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: WMK-Laboratorio-Local-Windows-sem-Docker
+          path: kit/
           if-no-files-found: error
           retention-days: 14
