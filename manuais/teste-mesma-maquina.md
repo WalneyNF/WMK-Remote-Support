@@ -35,7 +35,7 @@ Confira que o host aponta para **127.0.0.1:4433** — esse valor está previsto 
 
 ## 3. Iniciar laboratório — um clique
 
-No Explorador de Arquivos, abra a pasta extraída do kit. Clique com o botão direito no arquivo `WMK-Teste-Local.ps1` e selecione **Executar com PowerShell** (ou abra o PowerShell na pasta e execute):
+No Explorador de Arquivos, abra a pasta extraída do kit. Dê **dois cliques em `WMK-Iniciar-Teste.cmd`**. Ele inicia o PowerShell com liberação de execução **apenas neste processo** e executa o script do kit. Alternativamente, abra um PowerShell e execute:
 
 ```powershell
 powershell.exe -NoProfile -File ".\WMK-Teste-Local.ps1"
