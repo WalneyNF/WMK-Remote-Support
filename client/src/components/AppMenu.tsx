@@ -50,6 +50,7 @@ function AppMenu({ onClose }: { onClose: () => void }) {
   const app = useStore((s) => s.app);
   const web = api.kind === "web";
   const [keys, setKeys] = useState(false);
+  const [about, setAbout] = useState(false);
 
   return (
     <Popover className="app-menu" onClose={onClose}>
@@ -80,6 +81,25 @@ function AppMenu({ onClose }: { onClose: () => void }) {
               <CopyButton text={app.configPath} />
             </div>
             <div className="am-path">{breakablePath(app.configPath)}</div>
+          </div>
+        )}
+      </div>
+
+      <div className="am-actions">
+        <button className={`am-item ${about ? "open" : ""}`} aria-expanded={about} onClick={() => setAbout((v) => !v)}>
+          <span className="am-item-icon"><Logo size={22} /></span>
+          <span className="am-item-text">Sobre o WMK Remote Support
+            <span className="muted small block">Informações do projeto e créditos</span>
+          </span>
+          <IconChevron size={15} className="am-chevron" />
+        </button>
+        {about && (
+          <div className="am-keys" role="region" aria-label="Sobre o WMK Remote Support">
+            <strong>WMK Remote Support</strong>
+            <span className="block">Versão {app?.version ?? "0.2.3"} · Acesso e suporte remoto</span>
+            <span className="block">Desenvolvimento e personalização: Walney Moreira Klein</span>
+            <span className="block">Contato: <a href="mailto:walneyk@hotmail.com">walneyk@hotmail.com</a></span>
+            <span className="block">Baseado no Airhand, de sqlpxc. Licença MIT — créditos originais preservados.</span>
           </div>
         )}
       </div>
