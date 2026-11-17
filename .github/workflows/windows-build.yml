@@ -87,6 +87,8 @@ jobs:
             web -> target
       - name: Instalar CMake
         uses: lukka/get-cmake@latest
+      - name: Testar protocolo de arquivos e validacoes
+        run: cargo test --locked -p airhand-proto --lib
       - name: Compilar relay nativo Windows
         run: cargo build --locked --release -p airhand-server
       - name: Compilar console web nativo Windows
