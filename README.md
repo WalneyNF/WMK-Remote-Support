@@ -88,6 +88,8 @@ Na aba **Actions**, selecione **Windows — compilação WMK** e execute **Run w
 
 Artefatos de Actions **não são automaticamente Releases públicas**. Primeiro validaremos a compilação e as conexões.
 
+**[Pesquisa visual: transferência de arquivos no AnyDesk](manuais/transferencia-referencia-anydesk.html)** — requisitos dos dois painéis, upload/download, Ctrl+C/Ctrl+V, segurança e testes. **Ainda não implementado no WMK.**
+
 ## Transferência de arquivos e tempo de sessão
 
 **Transferência de arquivos (em desenvolvimento):** pretendemos permitir enviar arquivos do computador do técnico para o cliente e baixar arquivos autorizados do cliente. Isso ainda **não está disponível no protocolo atual**. Não confundir com a área de transferência de texto existente.
