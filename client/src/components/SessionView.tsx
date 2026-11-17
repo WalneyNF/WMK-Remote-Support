@@ -287,6 +287,7 @@ export function SessionView({ s }: { s: RemoteSession }) {
 
   return (
     <div className={`session-view ${immersive ? "immersive" : ""}`}>
+      {editorOpen && <WmkTextEditor onClose={() => { setEditorOpen(false); s.setInteractive(true); s.focus(); }} />}
       {immersive && <div className="hot-edge" />}
       <header ref={toolbarRef} className={`toolbar ${revealed ? "revealed" : ""}`}>
         {/* 像浏览器的地址栏：连的是哪台、现在怎么样 */}
