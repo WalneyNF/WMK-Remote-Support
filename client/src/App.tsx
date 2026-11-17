@@ -8,7 +8,7 @@ import { WebUnsupported, webUnsupported } from "./components/WebUnsupported";
 import { allowClose, applyFullscreen, closeTab, loadDevices, reopenLast } from "./lib/actions";
 import { api } from "./lib/api";
 import { supportedDecoders } from "./lib/codec";
-import { setLang, useLang } from "./lib/i18n";
+import { getLang, setLang, useLang } from "./lib/i18n";
 import { markPlatform } from "./lib/platform";
 import { store, useStore } from "./lib/store";
 
@@ -52,10 +52,13 @@ function Console() {
   const immersive = useStore((s) => s.immersive);
 
   useEffect(() => {
-    const unLang = api.onLangChanged(setLang);
+    const unLang = api.onLangChanged((next) => {
+      // O Rust usa en/zh; a escolha pt-BR é persistida no frontend.
+      if (getLang() !== "pt") setLang(next);
+    });
     void api.appInfo().then((info) => {
       store.setApp(info);
-      setLang(info.lang);
+      if (getLang() !== "pt") setLang(info.lang);
     });
     void api.serverStatus().then(store.setServer);
     void loadDevices();
