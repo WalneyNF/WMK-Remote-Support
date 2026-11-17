@@ -225,8 +225,16 @@
         "Controle de uso de CPU/RAM e crescimento do arquivo",
         "Queda de energia deixa fragmentos recuperaveis",
         "Cliente pode interromper o compartilhamento imediatamente",
-        "Nao gravar sem permissao ou no modo de tela privada"
-      ]
+        "Nao gravar sem permissao ou no modo de tela privada",
+        "Remux sem reencodificacao para codecs/contêineres compativeis",
+        "Segmentos recuperaveis apos falha/quebra de conexao",
+        "Player local e exportacao MP4 ou conversao offline",
+        "Teste CPU e disco durante sessao longa sem perda de controle",
+        "Marcadores de erro, captura PNG e relatorio por sessao",
+        "Alternancia de monitor/resolucao e chaveamento de codec sem corromper arquivo",
+        "Sem audio por padrao; audio requer permissao separada"
+      ],
+      "notes": "Preferir gravacao por remultiplexacao dos pacotes de video recebidos (H264/HEVC/AV1 conforme compatibilidade) sem reencodar. Validar timestamps, keyframes, troca de codec/resolucao, reconexao, multimonitor e audio opt-in. Usar segmentos curtos com escrita incremental, indice e hash; exportar MP4 quando possivel e converter quando necessario. Exigir autorizacao informada no host e indicador persistente de gravacao."
     },
     {
       "id": "audit-trail",
