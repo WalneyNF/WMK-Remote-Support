@@ -28,6 +28,7 @@ import {
 import { Popover } from "./Popover";
 import { QualityPanel, fmtKbps } from "./QualityPanel";
 import { LabRecorder } from "./LabRecorder";
+import { WmkTextEditor } from "./WmkTextEditor";
 
 /** 把会话的 canvas 挂到当前位置（同一时刻只会挂在一个地方） */
 export function CanvasHost({ s, interactive }: { s: RemoteSession; interactive: boolean }) {
@@ -179,6 +180,7 @@ export function SessionView({ s }: { s: RemoteSession }) {
   const title = useSessionTitle(s);
   const [menu, setMenu] = useState<Menu>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [editorOpen, setEditorOpen] = useState(false);
   // 对方要求配对码、或者对方的身份变了（要重新配对）时输入的配对码
   const [pairing, setPairing] = useState("");
   const needsPairing =
@@ -355,6 +357,7 @@ export function SessionView({ s }: { s: RemoteSession }) {
 
         <div className="tb-right">
           {api.kind === "web" && <LabRecorder session={s} />}
+          <button className="tb-btn" type="button" onClick={() => { s.setInteractive(false); setEditorOpen(true); }} title="Abrir arquivo local XML, JSON, TXT ou LOG para inspeção e formatação">Editor XML/JSON</button>
           <button className="tb-btn" type="button" disabled={!live || savingScreenshot} onClick={() => void saveScreenshot()} title="Capturar a tela remota em PNG para um relatório de suporte">
             <span>{savingScreenshot ? "Salvando..." : "Capturar tela"}</span>
           </button>
