@@ -24,6 +24,8 @@ export function ConnectView() {
   const decoders = useStore((s) => s.decoders);
   const devices = useStore((s) => s.devices);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
+  // Modo simples por padrão: controles técnicos continuam acessíveis sob demanda.
+  const [advanced, setAdvanced] = useState(false);
 
   // 新建连接标签总是有的时候才显示这一页；万一没有（例如状态不一致），补一个
   useEffect(() => {
@@ -94,8 +96,8 @@ export function ConnectView() {
             <div className="hero-icon">
               <IconMonitor size={26} />
             </div>
-            <h1>{t("connect.title")}</h1>
-            <p className="muted">{t("connect.hint")}</p>
+            <h1>Conectar a um computador</h1>
+            <p className="muted">Digite o código de 6 números informado pela pessoa que precisa de ajuda.</p>
           </div>
 
           <div className="nt-field">
@@ -184,6 +186,18 @@ export function ConnectView() {
           )}
 
           <div className="nt-field">
+            <button
+              type="button"
+              className="text-btn"
+              aria-expanded={advanced}
+              aria-controls="wmk-advanced-quality"
+              onClick={() => setAdvanced((value) => !value)}
+            >
+              {advanced ? "Ocultar opções avançadas ▲" : "Opções avançadas de qualidade ▼"}
+            </button>
+          </div>
+
+          {advanced && <div className="nt-field" id="wmk-advanced-quality">
             <div className="nt-label">
               <span>{t("connect.quality")}</span>
             </div>
@@ -203,7 +217,7 @@ export function ConnectView() {
             <div className="preset-desc muted small">
               {presetDesc(preset)} · {t("connect.prefer", { codec: CODEC_LABEL[codec] })}
             </div>
-          </div>
+          </div>}
 
           {error && (
             <div className="error-box" role="alert">
