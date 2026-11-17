@@ -364,7 +364,7 @@ function DeviceItem({
     ? session.state === "live"
       ? t("devices.open")
       : sessionStateText(session)
-    : relativeTime(d.lastUsed, Date.now(), getLang() === "zh" ? "zh-CN" : "en");
+    : relativeTime(d.lastUsed, Date.now(), getLang() === "zh" ? "zh-CN" : getLang() === "pt" ? "pt-BR" : "en");
   const p = d.quality ? matchPreset(d.quality) : null;
   const finish = (value: string | null) => {
     if (value !== null) renameDevice(d.code, value);
