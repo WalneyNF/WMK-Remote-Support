@@ -31,6 +31,8 @@ export interface ViewOutput {
 /** 主线程对一个会话的画面（在 Worker 里）的操作 */
 export interface MediaView {
   readonly id: number;
+  /** Imagem PNG do último quadro remoto renderizado. */
+  snapshot(): Promise<Blob>;
   /** 音画同步是否生效（开关打开且正在播放声音） */
   setSync(on: boolean): void;
   /** 声音输出：音频线程的端口（见 audio.ts）；null = 不播放 */
@@ -85,6 +87,8 @@ export class ConsoleLink {
   private openWaiters: (() => void)[] = [];
   private chans = new Map<number, Chan>();
   private views = new Map<number, ViewOutput>();
+  private nextSnapshotId = 1;
+  private snapshots = new Map<number, { viewId: number; resolve: (blob: Blob) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }>();
   private status: ServerState = { state: "connecting" };
   private statusListeners = new Set<(s: ServerState) => void>();
   private onlineListeners = new Set<(code: number) => void>();
@@ -218,6 +222,15 @@ export class ConsoleLink {
       case "stats":
         this.views.get(m.id)?.stats(m.decodeMs, m.sync);
         return;
+      case "snapshot": {
+        const waiting = this.snapshots.get(m.requestId);
+        if (!waiting) return;
+        this.snapshots.delete(m.requestId);
+        clearTimeout(waiting.timer);
+        if (waiting.viewId !== m.id || m.error || !m.blob) waiting.reject(new Error(m.error ?? "Imagem remota inválida."));
+        else waiting.resolve(m.blob);
+        return;
+      }
     }
   }
 
@@ -298,6 +311,15 @@ export class ConsoleLink {
     this.post({ t: "view", id, canvas: offscreen }, [offscreen]);
     return {
       id,
+      snapshot: () => new Promise<Blob>((resolve, reject) => {
+        const requestId = this.nextSnapshotId++;
+        const timer = setTimeout(() => {
+          this.snapshots.delete(requestId);
+          reject(new Error("Tempo esgotado ao capturar a imagem remota."));
+        }, 10000);
+        this.snapshots.set(requestId, { viewId: id, resolve, reject, timer });
+        this.post({ t: "snapshot", id, requestId });
+      }),
       setSync: (on) => this.post({ t: "sync", id, on }),
       setAudio: (port) => this.post({ t: "audio", id, port }, port ? [port] : []),
       setMic: (port) => this.post({ t: "mic", id, port }, port ? [port] : []),
@@ -307,6 +329,13 @@ export class ConsoleLink {
       requestKeyframe: () => this.post({ t: "keyframe", id }),
       setLayout: (area, enhance) => this.post({ t: "layout", id, area, enhance }),
       dispose: () => {
+        for (const [requestId, waiting] of this.snapshots) {
+          if (waiting.viewId === id) {
+            clearTimeout(waiting.timer);
+            waiting.reject(new Error("Sessão encerrada."));
+            this.snapshots.delete(requestId);
+          }
+        }
         this.views.delete(id);
         this.post({ t: "drop", id });
       },
