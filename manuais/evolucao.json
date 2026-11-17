@@ -141,6 +141,57 @@
         "Exportacao",
         "Redacao de informacoes sensiveis"
       ]
+    },
+    {
+      "id": "zero-config-relay",
+      "area": "Facilidade",
+      "title": "Conexão imediata com relay WMK pré-configurado e certificado fixado",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Infraestrutura relay real disponível 24x7",
+        "Certificado fixado de forma confiável e atualização segura",
+        "Instalador Windows sem etapas de rede",
+        "Primeiro código obtido em máquina de cliente sem suporte técnico"
+      ]
+    },
+    {
+      "id": "session-permissions",
+      "area": "Segurança",
+      "title": "Perfis de autorização por sessão: visualizar, controlar, arquivos, clipboard",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Permissão negada impede comando no backend",
+        "Arquivos exigem confirmação própria",
+        "Host pode cancelar a qualquer instante",
+        "Revogação imediata de controlador"
+      ]
+    },
+    {
+      "id": "home-client-mode",
+      "area": "Facilidade",
+      "title": "Tela Receber ajuda com código grande e status de rede",
+      "status": "planejado",
+      "priority": "P0",
+      "tests": [
+        "Usuário leigo obtém código sem tray",
+        "Código de pareamento apresentado de maneira segura",
+        "Sem exposição de servidor e certificado na tela básica"
+      ]
+    },
+    {
+      "id": "admin-settings",
+      "area": "Facilidade",
+      "title": "Preferências organizadas em Geral, Acesso, Arquivos, Capturas, Vídeo, Áudio, Rede avançada",
+      "status": "planejado",
+      "priority": "P1",
+      "tests": [
+        "Idioma selecionável pt-BR",
+        "Rede somente no modo técnico",
+        "Preferências persistentes",
+        "Sem redução de segurança nos padrões"
+      ]
     }
   ]
 }
