@@ -13,6 +13,8 @@
 
 > 🧪 **Nova versão de laboratório (branch `wmk/v0.3-preview-lab`):** [manual de teste em um só PC](manuais/teste-mesma-maquina.md). O GitHub Actions tenta gerar o instalador Windows e um kit local sem Docker, com servidor relay e console web. A prévia inclui **gravação WebM experimental de até 30 segundos**, apenas no console web em localhost. Não é gravação auditável com aceite no host, e a **transferência de arquivos ainda não está implementada**. Este kit é de teste, não de produção.
 
+**Idioma brasileiro na prévia:** a central React agora oferece **PT-BR** no menu Configurações > Idioma, com tradução das telas principais (conexão, computadores, sessão, qualidade e erros comuns). A preferência fica salva no navegador/WebView. **A tradução ainda é parcial:** algumas mensagens avançadas podem aparecer em inglês; menus nativos Rust/serviço Windows e Android exigem uma segunda etapa de localização.
+
 ## Sobre o projeto
 
 O **WMK Remote Support** é uma iniciativa de transformar um software de desktop remoto em uma plataforma de atendimento técnico: conexões seguras com autorização, suporte a clientes, diagnóstico, histórico de chamados e documentação acessível em português brasileiro.
