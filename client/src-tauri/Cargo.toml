@@ -1,6 +1,6 @@
 [package]
 name = "airhand"
-description = "Airhand remote desktop client (controller and host in one program)"
+description = "WMK Remote Support - cliente de acesso remoto baseado no Airhand"
 version = "0.2.3"
 edition = "2024"
 license = "MIT"
