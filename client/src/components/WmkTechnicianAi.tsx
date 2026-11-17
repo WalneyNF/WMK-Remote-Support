@@ -109,7 +109,7 @@ export function WmkTechnicianAi({ onClose, sessionLabel }: { onClose: () => void
       setNotice("Pergunta muito grande; limite de 12.000 caracteres nesta prévia.");
       return;
     }
-    const next: ChatItem[] = [...history, { role: "user", content: question }].slice(-20);
+    const next: ChatItem[] = [...history, { role: "user" as const, content: question }].slice(-20);
     setHistory(next);
     setDraft("");
     setBusy(true);
@@ -136,7 +136,7 @@ export function WmkTechnicianAi({ onClose, sessionLabel }: { onClose: () => void
       const result: unknown = await response.json();
       const answer = (result as { message?: { content?: unknown } }).message?.content;
       if (typeof answer !== "string" || !answer.trim()) throw new Error("Resposta vazia ou inválida do modelo.");
-      setHistory(items => [...items, { role: "assistant", content: answer.slice(0, 24000) }].slice(-20));
+      setHistory(items => [...items, { role: "assistant" as const, content: answer.slice(0, 24000) }].slice(-20));
       setNotice("Resposta local recebida. Confirme orientações técnicas antes de aplicá-las.");
     } catch (error) {
       setNotice("Falha na consulta local: " + (error instanceof Error ? error.message : "erro desconhecido") +
